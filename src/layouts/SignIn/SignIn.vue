@@ -77,7 +77,6 @@ export default {
       passwordRules: [
         v => !!v || "Password is required",
         v => v.length >= 6 || "Password must be at least 6 characters",
-       
       ],
       isValid : false,
     };
@@ -98,7 +97,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
