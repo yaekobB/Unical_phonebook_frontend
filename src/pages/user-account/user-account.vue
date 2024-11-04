@@ -15,7 +15,6 @@ import dataTable from '../../components/data-table/data-table.vue';
 import Snackbar from '@/components/snackbar/Snackbar.vue';
 import { useSideNavStore } from '@/components/side-nav/store';
 // import { toRaw } from 'vue';
-
 export default {
   components: { dataTable, Snackbar },
 
