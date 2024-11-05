@@ -39,7 +39,6 @@
               required
               rounded
             ></v-text-field>
-            
              <v-row>
               
               <v-col class="d-flex justify-end">
@@ -56,7 +55,6 @@
    
   </v-app>
 </template>
-
 <script>
 import { useSignInStore } from './store';
 import Snackbar from '../../components/snackbar/Snackbar.vue'
