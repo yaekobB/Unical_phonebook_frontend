@@ -3,7 +3,7 @@ import axios from 'axios';
 import  {authHeader}  from './authHeader';
 
 const apiClient = axios.create({
-  baseURL: 'http://160.97.244.53:8082', 
+  baseURL: 'http://160.97.244.6:8082', 
   headers: authHeader(),
   // You can also set a timeout or other global config options here
   // timeout: 40000,
