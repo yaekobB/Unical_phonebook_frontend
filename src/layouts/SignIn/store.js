@@ -65,7 +65,7 @@ export const useSignInStore = defineStore('signInStore', {
     },
     async signOut(){
       localStorage.clear()
-      router.push('/')
+      router.push('/sign-in')
       this.snackbarStore.showSnackbar({
         message: "Signed Out successfully",
         color: 'success',
