@@ -68,6 +68,11 @@ export const useTableStore = defineStore('tableStore', {
       this.switch = bool;
 
     },
+    togglePasswordVisibility(key) {
+      this.userStore.togglePasswordVisibility(key)
+     
+      
+    },
     saveItem() {
       // const userStore = useUserStore();
       if (this.editedItem.id) {
