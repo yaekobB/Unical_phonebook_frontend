@@ -8,16 +8,20 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 // import { setupLayouts } from 'virtual:generated-layouts'
 import SignIn from '../layouts/SignIn/SignIn.vue'
+import SignUp from '@/layouts/SignUp/sign-up.vue'
 // import Test from '../components/data-table/test/test.vue'
 import Test from '../components/snackbar/test'
 import UserAccount from '../pages/user-account/user-account.vue'
 import Dashboard from '../components/Dashboard/Dashboard.vue'
 import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
+import Phonebook from '@/pages/phonebook/phonebook.vue'
 // import { routes } from 'vue-router/auto-routes'
 
 const  routes = [
-  { path: '/', component: SignIn },
+  { path: '/', component: Phonebook },
+  { path: '/sign-in', component: SignIn },
+  { path: '/sign-up', component: SignUp },
   { path: '/test', component: Test},
   { 
     path:'/users', 
@@ -39,6 +43,10 @@ const  routes = [
   ]
 
   },
+  // {
+  //   path:'*',
+  //   component: Phonebook
+  // }
   
 ]
 
@@ -49,8 +57,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/'];
+  const publicPages = ['/','/sign-in','/sign-up'];
   const authRequired = !publicPages.includes(to.path);
+  
   // Redirect to login page if page requires authentication and user is not logged in
   if (authRequired && !localStorage.getItem('signInUser')) {
       return next('/');
