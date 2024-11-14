@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
 import { useSnackbarStore } from '@/components/snackbar/store'
+import { useTableStore } from '@/components/data-table/store'
 
 export const useUserStore = defineStore('userAccountStore', {
   state: () => ({
     componentName: 'userAccount',
     snackbarStore: useSnackbarStore(),
+    tableStore:useTableStore(),
     tableColumns: [
       {title:'Id', key:'id',align:'start'},
       { title: 'First Name', key: 'firstName' },
@@ -23,10 +25,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "First Name",
             fieldName: "input",
             type: "text",
-            value:"",
+           
             key: "firstName",
             prependIcon:'mdi-account-tie',
-            required: true,
+            
             rules:[
                 value=> !!value || 'First Name is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -39,10 +41,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Middle Name",
             fieldName: "input",
             type: "text",
-            value:"",
+           
             key: "middleName",
             prependIcon:'mdi-card-account-details-outline',
-            required: true,
+            
             rules:[
                 value=> !!value || 'Middle Name is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -55,10 +57,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Last Name",
             fieldName: "input",
             type: "text",
-            value:"",
+           
             key: "lastName",
             prependIcon:'mdi-human',
-            required: true,
+            
             rules:[
                 value=> !!value || 'Last Name is required *',
                 value=> /[a-zA-Z- ]*/.test(value) || 'Invalid String',
@@ -71,10 +73,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Email",
             fieldName: "input",
             type: "text",
-            value:"",
+           
             key: "email",
             prependIcon:'mdi-email',
-            required: true,
+            
             rules:[
                 v => !!v || "Email is required",
                 v => /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?unical\.it$/.test(v) || "Invalid Organizational Email "
@@ -86,10 +88,10 @@ export const useUserStore = defineStore('userAccountStore', {
         //     label: "code",
         //     fieldName: "input",
         //     type: "autocomplete",
-        //     value:"",
+        //    
         //     key: "countryCode",
         //     prependIcon:'mdi-flag-variant',
-        //     required: true,
+        //     
         //     validation:()=>{
         //             return {
         //                 required:true,
@@ -107,10 +109,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Phone Number",
             fieldName: "input",
             type: "text",
-            value:"",
+           
             key: "phoneNumber",
             prependIcon:'mdi-phone',
-            required: true,
+            
             rules:[
                 value=> !!value || 'Phone Number is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
@@ -123,10 +125,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Password",
             fieldName: "password",
             type: "password",
-            value:"",
+            showPassword:false,
             key: "password",
             prependIcon:'mdi-lock',
-            required: true,
+            
             rules: [
                 v => !!v || "Password is required",
                 v => v.length >= 6 || "Password must be at least 6 characters",
@@ -139,11 +141,11 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Confirm Password",
             fieldName: "password",
             type: "password",
-            value:"",
+            showPassword:false,
             key: "confirmPassword",
             prependIcon:'mdi-lock-check',
             // appendIcon:'',
-            required: true,
+            
             rules: [
                 v => !!v || "Password is required",
                 v => v.length >= 6 || "Password must be at least 6 characters",
@@ -156,10 +158,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Department",
             fieldName: "autocomplete",
             type: "autocomplete",
-            value:"",
+           
             key: "department",
             prependIcon:'mdi-store',
-            required: true,
+            
             items:["DeMACS","Finance","Telecommunication","Chemistry"],
             rules:[
                 value=> !!value || 'Department is required *',
@@ -173,10 +175,9 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Role",
             fieldName: "autocomplete",
             type: "autocomplete",
-            value:"",
             key: "userType",
             prependIcon:'mdi-shield-account',
-            required: true,
+            
             items:["Faculty","Administrative","Student"],
             rules:[
                 value=> !!value || 'Role is required *',
@@ -186,6 +187,68 @@ export const useUserStore = defineStore('userAccountStore', {
                 cols: 12,
                 md: 6,
         },
+        {
+          label: "Personal Webiste Link",
+          fieldName: "input",
+          type: "text",
+          key: "websiteLink",
+          prependIcon:'mdi-web',
+          
+          rules:[
+              // value=> !!value || 'Phone Number is required *',
+              // value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
+              // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
+          ],  
+              cols: 12,
+              md: 6,
+       },
+       {
+            label: "LinkedIn",
+            fieldName: "input",
+            type: "text",
+           
+            key: "linkedIn",
+            prependIcon:'mdi-linkedin',
+            
+            rules:[
+                // value=> !!value || 'Phone Number is required *',
+                // value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
+                // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
+            ],  
+                cols: 12,
+                md: 6,
+        },
+        {
+          label: "Twitter",
+          fieldName: "input",
+          type: "text",
+         
+          key: "twitter",
+          prependIcon:'mdi-twitter',
+          rules:[
+              // value=> !!value || 'Phone Number is required *',
+              // value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
+              // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
+          ],  
+              cols: 12,
+              md: 6,
+      },
+      {
+        label: "Address",
+        fieldName: "input",
+        type: "text",
+        key: "address",
+        prependIcon:'mdi-map-marker',
+        
+        // rules:[
+        //     value=> !!value || 'Phone Number is required *',
+        //     value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
+        //     // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
+        // ],  
+            cols: 12,
+            md: 6,
+    },
+        
         
       
     ],
@@ -250,7 +313,7 @@ export const useUserStore = defineStore('userAccountStore', {
             console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
-                    message: this.data.error,
+                    message: this.data.message,
                     color: 'error',
                     timeout: 5000
                   })
@@ -343,6 +406,36 @@ export const useUserStore = defineStore('userAccountStore', {
             })
           }
         
-    }
-  }
+    },
+
+    togglePasswordVisibility(key) {
+     
+      this.formFields.forEach(field => {
+        if (field.key === key) {
+          // Toggle the showPassword value for the matching field
+          field.showPassword = !field.showPassword;
+        }
+      });   
+      
+    },
+    // getFieldRules (key,password){
+      // console.log("@user store password confirmation rule")
+      // console.log(password)
+      // console.log(key)
+      // // Add password match rule if it's the confirmPassword field
+      // this.formFields.forEach(field => {
+      //   if (field.key === 'confirmPassword') {
+      //     // Toggle the showPassword value for the matching field
+      //     field.rules.push(
+      //       v => v === password || "Passwords do not match"
+      //     );
+      //   }
+      // });   
+      // console.log(this.formFields)
+     
+    // }
+    
+   
+  },
+ 
 })
