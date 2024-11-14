@@ -120,10 +120,10 @@
                   v-model="tableStore.editedItem[field.key]"
                   :label="field.label"
                   :prepend-inner-icon="field.prependIcon"
-                  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                  @click:append-inner="togglePasswordVisibility(field.key)"
-                 :type="field.type"
-                 :rules="field.rules"
+                  :append-inner-icon="field.showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="tableStore.togglePasswordVisibility(field.key)"
+                 :type="field.showPassword ? 'text' : 'password'"
+                 :rules="getFieldRules(field.key, field.rules)"
                  variant="outlined"
                   density="compact"
               
@@ -242,8 +242,8 @@ export default {
   data() {
     return {
       tableStore: useTableStore(),
-      showPassword: false,
-      showConfirmPassword:false,
+      // showPassword: false,
+      // showConfirmPassword:false,
       search:'',
       isValid:false,
       isValidAdd:false,
@@ -257,10 +257,17 @@ export default {
       this.tableStore.editedItem = { ...item }; // Load the item data into the form
       this.tableStore.openEditDialog();
     },
-      togglePasswordVisibility(key) {
-      key == 'password'? this.showPassword = !this.showPassword: this.showConfirmPassword =!this.showConfirmPassword
-      
-    },
+   
+    getFieldRules  (field,rules){
+      // Add password match rule if it's the confirmPassword field
+      if (field === 'confirmPassword') {
+        rules.push(
+          v => v === this.tableStore.editedItem.password || "Passwords do not match"
+        );
+      }
+
+      return rules;
+    }
   },
 };
 </script>
