@@ -19,9 +19,9 @@ import Phonebook from '@/pages/phonebook/phonebook.vue'
 // import { routes } from 'vue-router/auto-routes'
 
 const  routes = [
-  { path: '/', component: Phonebook },
-  { path: '/sign-in', component: SignIn },
-  { path: '/sign-up', component: SignUp },
+  { path: '/', name:"phonebook", component: Phonebook },
+  { path: '/sign-in', name:"signin", component: SignIn },
+  { path: '/sign-up', name:"signup", component: SignUp },
   { path: '/test', component: Test},
   { 
     path:'/users', 

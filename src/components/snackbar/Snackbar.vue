@@ -5,7 +5,6 @@
       :timeout="snackbarStore.timeout"
       :color="snackbarStore.color"
       elevation="24"
-      variant="tonal"
       location="top"
       rounded="pill"
     >

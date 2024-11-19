@@ -4,12 +4,15 @@
       <v-card class="elevation-12 sign-in-card" max-width="500" rounded>
         <v-card-title class="mb-3"
         >
-          <v-icon color="primary" class="mr-2" large>
+         <router-link :to="{name: 'phonebook'}">
+           <v-icon color="primary" class="mr-2" large>
             <v-img
             cover
             src="https://cdn.jsdelivr.net/gh/UniversitaDellaCalabria/unicms-template-unical@1.7.1/src/unicms_template_unical/static/images/addressbook.svg"></v-img>
           </v-icon>
-          Unical Phonebook Sign-In
+         </router-link>
+          
+          Unical Phonebook SignIn
         </v-card-title>
 
         <v-card-text class="pa-2">

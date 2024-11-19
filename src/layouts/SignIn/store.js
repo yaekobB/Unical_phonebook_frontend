@@ -27,7 +27,7 @@ export const useSignInStore = defineStore('signInStore', {
             this.snackbarStore.showSnackbar({
                 message: response.data.message,
                 color: 'error',
-                timeout: 5000
+                timeout: 3000
               })
 
         }else{
@@ -57,7 +57,7 @@ export const useSignInStore = defineStore('signInStore', {
         this.snackbarStore.showSnackbar({
             message: error.response.data.message,
             color: 'error',
-            timeout: 5000
+            timeout: 3000
           })
       }
 
@@ -66,11 +66,11 @@ export const useSignInStore = defineStore('signInStore', {
     async signOut(){
       localStorage.clear()
       router.push('/sign-in')
-      this.snackbarStore.showSnackbar({
-        message: "Signed Out successfully",
-        color: 'success',
-        timeout: 5000
-      })
+      // this.snackbarStore.showSnackbar({
+      //   message: "Signed Out successfully",
+      //   color: 'success',
+      //   timeout: 3000 
+      // })
       
 
   }

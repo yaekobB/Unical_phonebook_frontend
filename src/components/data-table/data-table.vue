@@ -48,7 +48,7 @@
             divided
             
           >
-            <!-- <v-btn >
+            <v-btn >
               <v-tooltip location="bottom" >
                 <template v-slot:activator="{ props }">            
                    <v-switch color="#452624" v-bind="props" v-model="tableStore.switch" size="small">
@@ -57,7 +57,7 @@
                  Activate {{tableStore.dialogTitle}}
                </v-tooltip>
               
-              </v-btn> -->
+              </v-btn>
             <v-btn >
               <v-tooltip location="bottom" >
                 <template v-slot:activator="{ props }">            

@@ -2,7 +2,10 @@ import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
 import { useSnackbarStore } from '@/components/snackbar/store'
 import { useTableStore } from '@/components/data-table/store'
+import departments from '@/services/departments'
+import router from '@/router/index';
 
+// import roles from '@/services/roles'
 export const useUserStore = defineStore('userAccountStore', {
   state: () => ({
     componentName: 'userAccount',
@@ -28,7 +31,6 @@ export const useUserStore = defineStore('userAccountStore', {
            
             key: "firstName",
             prependIcon:'mdi-account-tie',
-            
             rules:[
                 value=> !!value || 'First Name is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -57,7 +59,6 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Last Name",
             fieldName: "input",
             type: "text",
-           
             key: "lastName",
             prependIcon:'mdi-human',
             
@@ -79,7 +80,7 @@ export const useUserStore = defineStore('userAccountStore', {
             
             rules:[
                 v => !!v || "Email is required",
-                v => /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?unical\.it$/.test(v) || "Invalid Organizational Email "
+                // v => /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?unical\.it$/.test(v) || "Invalid Organizational Email "
               ],
                 cols: 12,
                 md: 6,
@@ -161,8 +162,7 @@ export const useUserStore = defineStore('userAccountStore', {
            
             key: "department",
             prependIcon:'mdi-store',
-            
-            items:["DeMACS","Finance","Telecommunication","Chemistry"],
+            items:departments,
             rules:[
                 value=> !!value || 'Department is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -178,7 +178,7 @@ export const useUserStore = defineStore('userAccountStore', {
             key: "userType",
             prependIcon:'mdi-shield-account',
             
-            items:["Faculty","Administrative","Student"],
+            items:["Student", "Faculty","Administrative"],
             rules:[
                 value=> !!value || 'Role is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -224,7 +224,7 @@ export const useUserStore = defineStore('userAccountStore', {
           type: "text",
          
           key: "twitter",
-          prependIcon:'mdi-twitter',
+          prependIcon:'mdi-alpha-x-box',
           rules:[
               // value=> !!value || 'Phone Number is required *',
               // value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
@@ -265,12 +265,18 @@ export const useUserStore = defineStore('userAccountStore', {
     users:[]
   }),
   actions:{
-    async getUsers(){
+    async getUsers(pageLimit = 25 ,pageNumber = 1, searchKey= '', isPublic = false){
         // const snackbarStore = useSnackbarStore();
+        console.log("at get user-----------")
+
+        console.log(searchKey)
+        console.log(pageLimit)
+        console.log(pageNumber)
+        console.log(isPublic)
         try {
-            console.log("get users")
-           
-            const response = await apiClient.get('/user');
+          console.log(searchKey)
+            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}`
+            const response = await apiClient.get(url);
             console.log(response.data)
             if(response.data.error){
                 // snackbarStore.showSnackbar({
@@ -297,7 +303,7 @@ export const useUserStore = defineStore('userAccountStore', {
             // snackbarStore.showSnackbar({
             //     message: error.message,
             //     color: 'error',
-            //     timeout: 5000
+            //     timeout: 3000
             //   })
           }
 
@@ -305,9 +311,7 @@ export const useUserStore = defineStore('userAccountStore', {
     async setAddUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("adding user")
-            console.log(user)
-          
+                    
             const response = await apiClient.post('/user/signup',{...user});
             this.data = response.data;
             console.log(this.data)
@@ -315,14 +319,14 @@ export const useUserStore = defineStore('userAccountStore', {
              this.snackbarStore.showSnackbar({
                     message: this.data.message,
                     color: 'error',
-                    timeout: 5000
+                    timeout: 3000
                   })
             }else{
              this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully registered",
                 color: 'success',
-                timeout: 5000
+                timeout: 3000
               })
 
             }
@@ -332,7 +336,7 @@ export const useUserStore = defineStore('userAccountStore', {
            await  this.snackbarStore.showSnackbar({
               message: error,
               color: 'error',
-              timeout: 5000
+              timeout: 3000
             })
           }
         
@@ -350,14 +354,14 @@ export const useUserStore = defineStore('userAccountStore', {
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
                     color: 'error',
-                    timeout: 5000
+                    timeout: 3000
                   })
             }else{
              this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
-                timeout: 5000
+                timeout: 3000
               })
 
             }
@@ -367,7 +371,7 @@ export const useUserStore = defineStore('userAccountStore', {
              await  this.snackbarStore.showSnackbar({
               message: error,
               color: 'error',
-              timeout: 5000
+              timeout: 3000
             })
           }
         
@@ -385,14 +389,14 @@ export const useUserStore = defineStore('userAccountStore', {
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
                     color: 'error',
-                    timeout: 5000
+                    timeout: 3000
                   })
             }else{
              this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully Deleted",
                 color: 'success',
-                timeout: 5000
+                timeout: 3000
               })
 
             }
@@ -402,7 +406,76 @@ export const useUserStore = defineStore('userAccountStore', {
              await  this.snackbarStore.showSnackbar({
               message: error,
               color: 'error',
-              timeout: 5000
+              timeout: 3000
+            })
+          }
+        
+    },
+    async verifyEmail(email){
+      // const snackbarStore = useSnackbarStore();
+        try {
+           console.log(email)
+          
+            const response = await apiClient.put('/user/verify',{...email});
+            this.data = response.data;
+            console.log(this.data)
+            if(this.data.error){
+             this.snackbarStore.showSnackbar({
+                    message: this.data.message,
+                    color: 'error',
+                    timeout: 3000
+                  })
+            }else{
+              
+             this.snackbarStore.showSnackbar({
+                message: this.data.message,
+                color: 'success',
+                timeout: 3000
+              })
+            router.push('/sign-in')
+            }
+            console.log(this.data)
+          } catch (error) {
+            console.error('Error fetching data:', error);
+           await  this.snackbarStore.showSnackbar({
+              message: error,
+              color: 'error',
+              timeout: 3000
+            })
+          }
+        
+    },
+    async resendCode(email){
+      // const snackbarStore = useSnackbarStore();
+        try {
+           console.log("at resendcode store ===============")
+           console.log(email)
+          
+            const response = await apiClient.put('/user/resend-code',{...email});
+            this.data = response.data;
+            console.log(this.data.message)
+            if(this.data.error){
+             this.snackbarStore.showSnackbar({
+                    message: this.data.message,
+                    color: 'error',
+                    timeout: 3000
+                  })
+            }else{
+             this.getUsers()
+             this.snackbarStore.showSnackbar({
+                message: this.data.message,
+                color: 'success',
+                timeout: 3000
+              })
+
+            }
+            console.log(this.data)
+          } catch (error) {
+            console.error('Error fetching data:', error);
+           await  this.snackbarStore.showSnackbar({
+              message: error,
+              color: 'error',
+              timeout: 3000
             })
           }
         
