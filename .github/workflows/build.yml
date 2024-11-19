@@ -12,33 +12,44 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16' # Use the Node.js version required by your project
-
-      # Step 3: Cache Node modules for faster builds
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
+    build-and-test:
+        runs-on: ubuntu-latest
     
-
+        strategy:
+          matrix:
+            node-version: [16.x, 18.x,20.x]  # Test on different Node.js versions
     
-
-      
-
-   
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+    
+          - name: Set up Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{ matrix.node-version }}
+    
+          - name: Install dependencies
+            run: npm install
+    
+          - name: Run tests
+            run: npm run test
+    
+          - name: Build project
+            run: npm run build
+    
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+    
+          - name: Set up Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: 20.x
+    
+          - name: Install dependencies
+            run: npm install
+    
+          - name: Run linting
+            run: npm run lint
