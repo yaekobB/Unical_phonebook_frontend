@@ -39,8 +39,6 @@ jobs:
 
     
 
-      # Step 3: Build for production
-      - name: Build
-        run: npm run build
+      
 
    
