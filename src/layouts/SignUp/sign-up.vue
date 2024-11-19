@@ -13,11 +13,13 @@
                <v-card class="" max-width="800" rounded>
                 <v-card-title class="mb-3"
                 >
-                <v-icon color="primary" class="mr-2" large>
-                    <v-img
-                    cover
-                    src="https://cdn.jsdelivr.net/gh/UniversitaDellaCalabria/unicms-template-unical@1.7.1/src/unicms_template_unical/static/images/addressbook.svg"></v-img>
-                </v-icon>
+                 <router-link :to="{name: 'phonebook'}">
+                    <v-icon color="primary" class="mr-2" large>
+                        <v-img
+                        cover
+                        src="https://cdn.jsdelivr.net/gh/UniversitaDellaCalabria/unicms-template-unical@1.7.1/src/unicms_template_unical/static/images/addressbook.svg"></v-img>
+                    </v-icon>
+                 </router-link>
                 Unical Phonebook  Registartion
                 </v-card-title>
 
@@ -51,7 +53,7 @@
                         ></v-text-field>
                         <v-autocomplete
                         v-if="field.fieldName == 'autocomplete'"
-                        
+                        v-model="signUpStore.editedItem[field.key]"
                         :label="field.label"
                         :items="field.items"
                         :prepend-inner-icon="field.prependIcon"
@@ -69,7 +71,8 @@
             </template>
 
         <template v-slot:item.2>
-        <v-card
+        <v-form ref="form" v-model="isVerifyValid">
+           <v-card
             class="mx-auto"
             elevation="1"
             max-width="500"
@@ -84,17 +87,19 @@
                 label="Enter value here"
                 variant="outlined"
                 single-line
+                v-model="verificationCode"
+                :rule="verifyRule"
             ></v-text-field>
 
             <v-btn
-                :disabled="loading"
+               
                 :loading="loading"
                 class="text-none mb-4"
                 color="#8a3c36"
                 size="x-large"
                 variant="flat"
                 block
-                @click="loading = !loading"
+                @click="verifyEmail"
             >
                 Verify Email
             </v-btn>
@@ -104,12 +109,15 @@
                 color="grey-lighten-3"
                 size="x-large"
                 variant="flat"
+                @click="resendCode"
                 block
             >
                 Resend Verification Code
             </v-btn>
             </v-card-text>
         </v-card>
+        </v-form>
+       
             
             </template>
          
@@ -151,7 +159,7 @@
             
         </v-stepper>
 
-
+       <Snackbar/>
  
      
      
@@ -163,10 +171,13 @@
 <script>
 import { useUserStore } from '@/pages/user-account/store.js';
 import {useSignUpStore} from '@/layouts/SignUp/store'
+
+import Snackbar from '@/components/snackbar/Snackbar.vue';
   export default {
     data: () => ({
       isValidAdd:false,
       loading: false,
+      isVerifyValid:false,
        userStore: useUserStore(),
        signUpStore: useSignUpStore(),
         step: 1,
@@ -175,6 +186,11 @@ import {useSignUpStore} from '@/layouts/SignUp/store'
         'Email Verification'
        
       ],
+      verificationCode: null,
+      verifyRule:[
+                    v => !!v || 'Verification code is required',
+                    v => /^\d{6}$/.test(v) || 'Verification code must be exactly 6 digits'
+                  ]
     }),
 
     watch: {
@@ -205,6 +221,7 @@ import {useSignUpStore} from '@/layouts/SignUp/store'
         // Handle the registration logic here (e.g., POST request)
         try {
           this.loading = true;
+          this.signUpStore.saveItem()
           // const response = await this.registerUser(); // Replace with your POST request function
           this.step++;
           this.loading = false;
@@ -222,6 +239,12 @@ import {useSignUpStore} from '@/layouts/SignUp/store'
         this.step--;
       }
     },
+    verifyEmail(){
+      this.signUpStore.verifyEmail(this.verificationCode)
+    },
+    resendCode(){
+      this.signUpStore.resendCode()
+    }
 
     },
     async created() {

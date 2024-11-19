@@ -29,25 +29,29 @@ export const useSignUpStore = defineStore('signUpStore', {
     },
     saveItem() {
       // const userStore = useUserStore();
-      if (this.editedItem.id) {
-        console.log("@ table store editing")
-
-        // Edit existing item
-        const index = this.items.findIndex(item => item.id === this.editedItem.id);
-        console.log(index)
-        if (index !== -1) {
-          this.items[index] = { ...this.editedItem };
-          this.userStore.setEditUser({...this.editedItem})
-        
-        }
-      } else {
+    
         // Add new item
-        console.log("@ table store")
+       
         this.userStore.setAddUser({...this.editedItem})
        
-      }
       
     },
+    verifyEmail(code){
+      const email = {
+        verificationCode:parseInt(code, 10),
+        email: this.editedItem.email
+      }
+      const verificationStatus = this.userStore.verifyEmail({...email})
+      console.log(verificationStatus)
+    },
+    resendCode(){
+
+      const email = {
+        email: this.editedItem.email
+      }
+     
+      this.userStore.resendCode(email)
+    }
    
   },
 });
