@@ -80,32 +80,12 @@ export const useUserStore = defineStore('userAccountStore', {
             
             rules:[
                 v => !!v || "Email is required",
-                // v => /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?unical\.it$/.test(v) || "Invalid Organizational Email "
+                v => /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?unical\.it$/.test(v) || "Invalid Organizational Email "
               ],
                 cols: 12,
                 md: 6,
         },
-        // {
-        //     label: "code",
-        //     fieldName: "input",
-        //     type: "autocomplete",
-        //    
-        //     key: "countryCode",
-        //     prependIcon:'mdi-flag-variant',
-        //     
-        //     validation:()=>{
-        //             return {
-        //                 required:true,
-        //                 rules:[
-        //                     value=> !!value || '',
-        //                     value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
-        //                     // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
-        //                 ]
-        //             }     
-        //         },
-        //         cols: 12,
-        //         md: 2,
-        // },
+       
         {
             label: "Phone Number",
             fieldName: "input",
@@ -117,7 +97,7 @@ export const useUserStore = defineStore('userAccountStore', {
             rules:[
                 value=> !!value || 'Phone Number is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid',
-                // value => /^[a-zA-Z0-9 ]*$/.test(value) || 'Invalid Branch Name'
+                
             ],  
                 cols: 12,
                 md: 6,
@@ -265,17 +245,22 @@ export const useUserStore = defineStore('userAccountStore', {
     users:[]
   }),
   actions:{
-    async getUsers(pageLimit = 25 ,pageNumber = 1, searchKey= '', isPublic = false){
+    async getUsers(pageLimit = 25 ,pageNumber = 1, searchKey= '', role ='', department='', isPublic = false){
         // const snackbarStore = useSnackbarStore();
         console.log("at get user-----------")
+        department = department == null? '':department
+        role = role == null? '':role
 
         console.log(searchKey)
         console.log(pageLimit)
+
         console.log(pageNumber)
         console.log(isPublic)
+        console.log(role),
+        console.log(department)
         try {
           console.log(searchKey)
-            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}`
+            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&role=${role}&department=${department}`
             const response = await apiClient.get(url);
             console.log(response.data)
             if(response.data.error){
