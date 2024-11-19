@@ -7,6 +7,7 @@ import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
+
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -26,6 +27,7 @@ export default defineConfig({
         configFile: 'src/styles/settings.scss',
       },
     }),
+     
     Components(),
     Fonts({
       google: {
@@ -46,6 +48,17 @@ export default defineConfig({
       vueTemplate: true,
     }),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    transformMode: {
+      web: [/\.vue$/], // Use for Vue file transformation
+    }
+  },
+    css: {
+      // Allow CSS files to be processed during tests
+      modules: false,  // Set to `true` if you want CSS modules
+    },
   define: { 'process.env': {} },
   resolve: {
     alias: {
