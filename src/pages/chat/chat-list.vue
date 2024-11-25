@@ -126,17 +126,17 @@ export default {
 
 <style scoped>
 .chat-list-container {
-  background-color: #f5f5f5;
-  min-height: 100vh;
+  /* background-color: #f5f5f5; */
+  min-height: 90vh;
   /* padding-top: 30px; */
 }
 .chat-list-card {
-  height: 90vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
 }
 .chat-list-header {
-  background-color: #8a3c36;
+  background-color: #b41308;
   color: white;
   text-align: center;
   padding: 15px;
