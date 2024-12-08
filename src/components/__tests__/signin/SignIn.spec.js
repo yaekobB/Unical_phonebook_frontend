@@ -59,11 +59,11 @@ describe('SignIn Component', () => {
   it('calls the signIn method when form is valid', async () => {
     const mockSignIn = jest.fn();
     // Mock the store method
-    jest.mock('@/layouts/SignIn/store.js', () => ({
-      useSignInStore: () => ({
-        signIn: mockSignIn,
-      }),
-    }));
+    // jest.mock('@/layouts/SignIn/store.js', () => ({
+    //   useSignInStore: () => ({
+    //     signIn: mockSignIn,
+    //   }),
+    // }));
 
     render(SignIn);
 
