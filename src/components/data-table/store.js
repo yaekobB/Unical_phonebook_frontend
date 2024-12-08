@@ -106,5 +106,8 @@ export const useTableStore = defineStore('tableStore', {
       }
       this.closeDeleteDialog();
     },
+    changeStatus(item){
+      this.userStore.changeStatus({...item})
+    }
   },
 });

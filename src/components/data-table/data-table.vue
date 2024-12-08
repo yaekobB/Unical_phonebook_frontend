@@ -50,11 +50,12 @@
           >
             <v-btn >
               <v-tooltip location="bottom" >
-                <template v-slot:activator="{ props }">            
-                   <v-switch color="#452624" v-bind="props" v-model="tableStore.switch" size="small">
+                <template v-slot:activator="{ props }">        
+                   
+                   <v-switch color="#452624" v-bind="props" v-model="item.isActive" size="small" @click="changeStatus(item)">
                   </v-switch>
                 </template>
-                 Activate {{tableStore.dialogTitle}}
+                {{item.isActive? "Deactivate":"Activate"}} {{tableStore.dialogTitle}}
                </v-tooltip>
               
               </v-btn>
@@ -256,6 +257,12 @@ export default {
     editItem(item) {
       this.tableStore.editedItem = { ...item }; // Load the item data into the form
       this.tableStore.openEditDialog();
+    },
+    changeStatus(item){
+      this.tableStore.editedItem = {...item}
+
+      this.tableStore.changeStatus(item);
+
     },
    
     getFieldRules  (field,rules){

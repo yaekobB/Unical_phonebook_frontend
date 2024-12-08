@@ -237,9 +237,10 @@ export const useUserStore = defineStore('userAccountStore', {
     editIcon:"mdi-account-edit",
     navItems:[
         // {title:"Profile", value:"profile",prependIcon:"mdi-account"},
-        {title:"Users", value:"user",prependIcon:"mdi-account"},
+        {title:"Users", value:"user",prependIcon:"mdi-account",url:"users"},
         {title:"Departments", value:"department",prependIcon:"mdi-domain"},
-        {title:"Roles", value:"role",prependIcon:"mdi-badge-account-horizontal"}
+        {title:"Roles", value:"role",prependIcon:"mdi-badge-account-horizontal"},
+        {title:"Chat", value:"chat",prependIcon:"mdi-chat",url:"chat"},
 
     ],
     users:[]
@@ -247,22 +248,16 @@ export const useUserStore = defineStore('userAccountStore', {
   actions:{
     async getUsers(pageLimit = 25 ,pageNumber = 1, searchKey= '', role ='', department='', isPublic = false){
         // const snackbarStore = useSnackbarStore();
-        console.log("at get user-----------")
+        // console.log("at get user-----------")
         department = department == null? '':department
         role = role == null? '':role
 
-        console.log(searchKey)
-        console.log(pageLimit)
-
-        console.log(pageNumber)
-        console.log(isPublic)
-        console.log(role),
-        console.log(department)
+      
         try {
-          console.log(searchKey)
+          
             const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&role=${role}&department=${department}`
             const response = await apiClient.get(url);
-            console.log(response.data)
+            // console.log(response.data)
             if(response.data.error){
                 // snackbarStore.showSnackbar({
                 //     message: this.data.error,
@@ -276,14 +271,20 @@ export const useUserStore = defineStore('userAccountStore', {
                 //     color: 'success',
                 //     timeout: 3000
                 //   })
-                  this.users = response.data
+                // this.users = response.data
+                  this.users = response.data.map(user =>{
+                    return {
+                      ...user,
+                      isActive: user.userStatus == 'Active'?true:false
+                    }
+                  })
 
                   console.log(this.users)
             }
             
-            console.log(response.data)
+            // console.log(response.data)
           } catch (error) {
-            console.log('Error fetching data:', error);
+            // console.log('Error fetching data:', error);
             // console.log(error.message)
             // snackbarStore.showSnackbar({
             //     message: error.message,
@@ -299,7 +300,7 @@ export const useUserStore = defineStore('userAccountStore', {
                     
             const response = await apiClient.post('/user/signup',{...user});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.message,
@@ -333,6 +334,43 @@ export const useUserStore = defineStore('userAccountStore', {
             console.log(user)
           
             const response = await apiClient.put(`/user/${user.userId}`,{...user});
+            this.data = response.data;
+            console.log(this.data)
+            if(this.data.error){
+             this.snackbarStore.showSnackbar({
+                    message: this.data.error,
+                    color: 'error',
+                    timeout: 3000
+                  })
+            }else{
+             this.getUsers()
+             this.snackbarStore.showSnackbar({
+                message: "Successfully Updated",
+                color: 'success',
+                timeout: 3000
+              })
+
+            }
+            console.log(this.data)
+          } catch (error) {
+            console.error('Error fetching data:', error);
+             await  this.snackbarStore.showSnackbar({
+              message: error,
+              color: 'error',
+              timeout: 3000
+            })
+          }
+        
+    },
+    async changeStatus(user){
+      // const snackbarStore = useSnackbarStore();
+        try {
+            console.log("Editing user")
+            console.log(user)
+            const  status = {
+              userStatus: user.userStatus == "Active"? "NotVerified":"Active"
+            }
+            const response = await apiClient.put(`/user/changestatus/${user.userId}`,status);
             this.data = response.data;
             console.log(this.data)
             if(this.data.error){

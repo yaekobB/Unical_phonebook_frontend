@@ -1,30 +1,30 @@
 <template>
-  <v-container class="chat-container">
+  <!-- <v-container class="chat-container" fluid> -->
     <v-row>
       <v-col>
         <!-- Chat Header -->
-        <v-card class="chat-card" rounded="xl">
+        <v-card class="chat-card" variant="outlined">
           <v-card-title class="chat-header">
             <v-avatar left>
               <v-icon large>mdi-chat</v-icon>
             </v-avatar>
-            <span class="chat-title">Chat Room</span>
+            <span class="chat-title">{{chatWindowStore.recipientName}}</span>
           </v-card-title>
           
           <!-- Chat Messages Display -->
           <v-card-text class="chat-messages" v-scroll-y>
             <div
-              v-for="(message, index) in messages"
+              v-for="(message, index) in chatWindowStore.messages"
               :key="index"
-              :class="{'my-message': message.isMe}"
+              :class="{'my-message': message.sender}"
             >
               <v-card
                 class="message-card"
-                :class="{'my-message-card': message.isMe}"
+                :class="{'my-message-card': message.sender}"
                 outlined
                 rounded="xl"
               >
-                <v-card-text>{{ message.text }}</v-card-text>
+                <v-card-text>{{ message.content }}</v-card-text> 
               </v-card>
             </div>
           </v-card-text>
@@ -51,29 +51,50 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  <!-- </v-container> -->
 </template>
 
 <script>
+import { useChatWindowStore } from '@/pages/chat/chat-window/store'
+import stompService from '@/services/socket/client/client-socket'
+
 export default {
   data() {
     return {
       newMessage: '',
-      isMe: false,
-      messages: [
-        { text: 'Hello! How are you?', isMe: false },
-        { text: "I'm good, thanks! How about you?", isMe: true },
-      ],
+      isMe: true,
+      chatWindowStore: useChatWindowStore(),
+      messages: [], // Store received messages
     };
   },
   methods: {
     sendMessage() {
-      this.isMe = !this.isMe
       if (this.newMessage.trim()) {
-        this.messages.push({ text: this.newMessage, isMe: this.isMe });
+        console.log("Sending message");
+        const message = { 
+          content: this.newMessage, 
+          senderId: this.chatWindowStore.senderId, 
+          recipientId: this.chatWindowStore.recipientId,
+          chatRoomId: this.chatWindowStore.chatRoomId
+        };
+        console.log(message);
+        this.chatWindowStore.sendMessage(message)
+        // stompService.sendMessage('/app/chat', { ...message });
         this.newMessage = '';
       }
     },
+    handleIncomingMessage(msg) {
+      this.messages.push(msg.content); // Handle received message
+      console.log("Received message: ", msg);
+    }
+  },
+  created() {
+    // Connect to WebSocket and listen for messages
+    stompService.connect(this.handleIncomingMessage);
+  },
+  beforeUnmount() {
+    // Disconnect when component is destroyed (for Vue 3)
+    stompService.disconnect();
   },
 };
 </script>

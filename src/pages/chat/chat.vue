@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-row>
+        <v-row no-gutters>
             <v-col cols="4">
              <ChatList/>
             </v-col>
@@ -11,8 +11,8 @@
     </v-container>
 </template>
 <script>
-import ChatList from '@/pages/chat/chat-list.vue'
-import ChatWindow from '@/pages/chat/chat-window.vue'
+import ChatList from '@/pages/chat/chat-list/chat-list.vue'
+import ChatWindow from '@/pages/chat/chat-window/chat-window.vue'
 export default {
     name:'chat',
     components:{
@@ -22,3 +22,9 @@ export default {
 
 }
 </script>
+<style scoped>
+.no-gap {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+</style>
