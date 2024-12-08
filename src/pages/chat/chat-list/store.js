@@ -35,6 +35,7 @@ export const useChatListStore = defineStore('chatListStore', {
             
             // console.log(this.users)
             // Find the recipient details based on recipientId
+           
             const recipient = this.users.find(user => user.userId == message.recipientId);
             console.log(message)
             // If recipient is found, format the message
@@ -42,8 +43,8 @@ export const useChatListStore = defineStore('chatListStore', {
               formattedMessages.push({
                 ...recipient,
                 fullName: recipient.fullName, // Recipient's name
-                lastMessage: message.content, // The message content
-                timestamp: message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Formatting timestamp
+                lastMessage: message.lastMessage, // The message content
+                // timestamp: message.updatedAt.split("T")[0]+ '\t' + message.updatedAt.split("T")[1], // Formatting timestamp
                 isRead: false, // Assuming unread status; adapt as needed
                 avatar: this.userInitials(recipient.firstName, recipient.lastName), // Recipient's avatar
                 chatRoomId: message.chatRoomId

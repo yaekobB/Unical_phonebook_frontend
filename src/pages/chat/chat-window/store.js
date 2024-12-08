@@ -1,7 +1,8 @@
 // stores/snackbarStore.js
 import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
-
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
 export const useChatWindowStore = defineStore('chatWindowStore', {
   state: () => ({
     messages: [
@@ -15,6 +16,45 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
   }),
 
   actions: {
+    connect() {
+      this.socket = new SockJS("http://localhost:8084/gs-guide-websocket");
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect(
+        {},
+        (frame) => {
+          console.log("Connected:", frame);
+          this.connected = true;
+          this.stompClient.subscribe("/topic/greetings", (message) => {
+            // alert(JSON.stringify(message))
+            // console.log(this.messages)
+            // const chat = {
+            //   userId: this.recipientId
+            // }
+            // this.setChatMessage()
+           
+            // alert(message)
+            // const msg ={}
+            const chat = JSON.parse(message.body);
+            // if(this.recipientId == chat.recipientId){
+             const msg = {
+                ...chat,
+                sender: chat.senderId == this.senderId? true: false,
+                
+  
+  
+              }
+            // }
+         
+            // const messageParsed = JSON.parse(message.body);
+            this.messages.push(msg);
+          });
+        },
+        (error) => {
+          console.error("Connection Error:", error);
+          this.connected = false;
+        }
+      );
+    },
    
     async setChatMessage(message){
         console.log("Set ChatWindow called")
@@ -58,7 +98,7 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
         const response = await apiClient.post(`/chats/send`,{...message});
         console.log(response.data)
         if(!response.data.error){
-           this.messages = response.data
+          //  this.messages = response.data
 
         }      
                

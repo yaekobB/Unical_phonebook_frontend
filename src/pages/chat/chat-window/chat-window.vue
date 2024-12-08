@@ -56,7 +56,8 @@
 
 <script>
 import { useChatWindowStore } from '@/pages/chat/chat-window/store'
-import stompService from '@/services/socket/client/client-socket'
+// import stompService from '@/services/socket/client/client-socket'
+
 
 export default {
   data() {
@@ -65,6 +66,9 @@ export default {
       isMe: true,
       chatWindowStore: useChatWindowStore(),
       messages: [], // Store received messages
+      socket: null,
+      stompClient: null,
+      connected: false,
     };
   },
   methods: {
@@ -83,18 +87,19 @@ export default {
         this.newMessage = '';
       }
     },
-    handleIncomingMessage(msg) {
-      this.messages.push(msg.content); // Handle received message
-      console.log("Received message: ", msg);
-    }
+    // handleIncomingMessage(msg) {
+    //   this.messages.push(msg.content); // Handle received message
+    //   console.log("Received message: ", msg);
+    // },
+   
   },
   created() {
     // Connect to WebSocket and listen for messages
-    stompService.connect(this.handleIncomingMessage);
+    this.chatWindowStore.connect();
   },
   beforeUnmount() {
     // Disconnect when component is destroyed (for Vue 3)
-    stompService.disconnect();
+    // stompService.disconnect();
   },
 };
 </script>
