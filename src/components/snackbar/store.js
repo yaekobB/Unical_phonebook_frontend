@@ -20,4 +20,4 @@ export const useSnackbarStore = defineStore('snackbarStore', {
       this.visible = false
     }
   },
-})
+})    
