@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row >
       <!-- <v-col cols="6"></v-col> -->
       <v-col cols="12" sm="6" md="4" lg="3" xl="2"  v-for="contact in contacts"
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import  dummyData  from './dummydata';
+// import  dummyData  from './dummydata';
 
 export default {
   name: "ContactDetailsCard",

@@ -11,30 +11,7 @@
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
-         <v-sheet   rounded="lg">
-            <v-tabs
-              v-model="tab"
-              :items="tabs"
-              align-tabs="left"
-              height="60"
-              slider-color="red-darken-4"
-            >
-              <template v-slot:tab="{ item }">
-                <v-tab
-                  :prepend-icon="item.icon"
-                  :text="item.text"
-                  :value="item.value"
-                  class="text-none"
-                ></v-tab>
-              </template>
-
-              <template v-slot:item="{ item }">
-                <v-tabs-window-item :value="item.value" class="pa-4">
-                 Information to be filled
-                </v-tabs-window-item>
-              </template>
-            </v-tabs>
-         </v-sheet>
+          <detail-profile :details="item"/>
         </td>
         
       </tr>
@@ -45,7 +22,9 @@
   </v-data-table>
 </template>
 <script>
+import detailProfile from '@/pages/profile/detail-profile/detail-profile.vue';
   export default {
+  components: { detailProfile },
      props: {
       contacts: {
         type: Array,
@@ -80,29 +59,7 @@
           { title: 'Role', key: 'userType' },
           { title: '', key: 'data-table-expand' },
         ],
-      tab: 'tab-1',
-      tabs: [
-        {
-          icon: 'mdi-book-open-page-variant',
-          text: 'Personal Information',
-          value: 'tab-1',
-        },
-        {
-          icon: 'mdi-map-marker',
-          text: 'Office',
-          value: 'tab-2',
-        },
-        {
-          icon: 'mdi-earth',
-          text: 'Social Medias',
-          value: 'tab-3',
-        },
-        {
-          icon: 'mdi-alarm',
-          text: 'Working Hours',
-          value: 'tab-4',
-        },
-      ],
+    
       }
     },
   }
