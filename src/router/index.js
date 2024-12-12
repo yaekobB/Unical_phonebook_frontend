@@ -17,12 +17,12 @@ import Dashboard from '../components/Dashboard/Dashboard.vue'
 import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
-import forgetPassword from '../components/forgotPassword/forgetPassword.vue'
+import forgotPassword  from '../components/forgotPassword/forgotPassword.vue'
 // import { routes } from 'vue-router/auto-routes'
 
 
 const  routes = [
-  {path: '/forgot-password', name: 'forgetPassword', component: forgetPassword},
+  {path: '/forgot-password', name: 'forgotPassword', component: forgotPassword},
   { path: '/', name:"phonebook", component: Phonebook },
   { path: '/sign-in', name:"signin", component: SignIn },
   { path: '/sign-up', name:"signup", component: SignUp },
