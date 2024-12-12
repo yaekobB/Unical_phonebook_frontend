@@ -43,11 +43,8 @@
               rounded
             ></v-text-field>
              <v-row>
-              <!-- Links -->
-            
-            <!-- Links end-->
               <v-col class="d-flex justify-end">
-              <router-link  :to="{name:'forgetPassword'}" class=" mt-3 mr-2 forgot-password-link" >
+              <router-link  :to="{name:'forgotPassword'}" class=" mt-3 mr-2 forgot-password-link" >
 
                 Forgot Password?
              
