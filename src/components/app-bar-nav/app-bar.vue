@@ -11,7 +11,7 @@
     >
     <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-    <v-row >
+    <v-row class="mb-6 mt-2">
       <UnicalLogo  @click="sideNavStore.toggleNav"/>
   </v-row>
   

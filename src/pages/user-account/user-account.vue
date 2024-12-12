@@ -13,7 +13,7 @@ import { useUserStore } from './store';
 import dataTable from '../../components/data-table/data-table.vue';
 
 import Snackbar from '@/components/snackbar/Snackbar.vue';
-import { useSideNavStore } from '@/components/side-nav/store';
+// import { useSideNavStore } from '@/components/side-nav/store';
 // import { toRaw } from 'vue';
 export default {
   components: { dataTable, Snackbar },
@@ -29,9 +29,9 @@ export default {
  async created() {
     const tableStore = useTableStore();
     const userStore = useUserStore();
-    const navSideStore = useSideNavStore();
+    // const navSideStore = useSideNavStore();
     // const columns = toRaw(userStore.tableColumns);
-    navSideStore.setNavigations(userStore.navItems)
+    // navSideStore.setNavigations(userStore.navItems)
     tableStore.setColumns(userStore.tableColumns);
     tableStore.setFormFields(userStore.formFields);
     tableStore.setDialogTitle(userStore.dialogTitle);

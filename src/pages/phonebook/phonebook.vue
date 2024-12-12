@@ -16,7 +16,7 @@
                         placeholder="Search Surname"
                         append-inner-icon="mdi-magnify"
                         style="max-width: 300px;"
-                        @click:append-inner="searchFilter(search)"
+                        @click:append-inner="searchFilter()"
                         variant="outlined"
                        
                         hide-details
@@ -139,7 +139,7 @@ export default{
             viewStat: 'card',
             selectedDepartments:null,
             selectedRoles:null,
-            pageLimit: 10,
+            pageLimit: 8,
             search: '',
             totalPage:0,
             currentPage:1,
@@ -156,28 +156,28 @@ export default{
     watch: {
     // Fetch data whenever the current page changes
     currentPage() {
-      this.controlPagination('');
+      this.controlPagination();
     },
     selectedDepartments(){
-        this.controlPagination(this.selectedDepartments);
+        this.controlPagination();
     },
     selectedRoles(){
-        this.controlPagination(this.selectedRoles)
-    }
+        this.controlPagination()
+    },
 
-    // search(){
-    //  this.controlPagination()
-    //  console.log(this.search)
-    // }
+    search(){
+     this.controlPagination()
+     console.log(this.search)
+    }
   },
     methods:{
         toggleView(view){
             this.viewStat = view
         },
-       async controlPagination(searchKey){
+       async controlPagination(){
         // console.log("Control pagination called")
            // the fourth parameter is isPublic value which is true for public request
-             await this.userStore.getUsers(this.pageLimit, this.currentPage, searchKey,true);
+             await this.userStore.getUsers(this.pageLimit, this.currentPage, this.search,this.selectedRoles, this.selectedDepartments,true);
              this.contacts = this.userStore.users
              if(this.contacts.length> 0){
                  this.totalPage = Math.ceil(this.contacts[0].totalUsers / this.pageLimit)
@@ -186,10 +186,10 @@ export default{
              
     
         },
-        searchFilter(searchKey){
-            this.pageLimit = 25
+        searchFilter(){
+            this.pageLimit = 8
             this.currentPage = 1
-            this.controlPagination(searchKey)
+            this.controlPagination()
         }
 
     },

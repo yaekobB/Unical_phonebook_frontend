@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row >
       <!-- <v-col cols="6"></v-col> -->
       <v-col cols="12" sm="6" md="4" lg="3" xl="2"  v-for="contact in contacts"
@@ -102,17 +102,17 @@
             <v-spacer></v-spacer>
               <!-- Social Media Section -->
           <div class=" d-flex align-center">
-             <v-btn icon class="white--text " href="" target="_blank" v-tooltip="contact.phoneNumber">
+             <v-btn icon class="white--text " v-if="contact.phoneNumber" href="" target="_blank" v-tooltip="contact.phoneNumber">
               <v-icon color="#e1306c" icon="mdi-phone" size="24" class="ma-3"></v-icon>
             </v-btn>
-            <v-btn icon class="white--text" :href="contact.email" target="_blank">
+            <v-btn icon class="white--text" v-if="contact.email" :href="'mailto:'+contact.email" target="_blank">
               <v-icon color="#3b5998" icon="mdi-email" size="24" class="ma-3"></v-icon>
             </v-btn>
-            <v-btn icon class="white--text" :href="contact.websiteLink" target="_blank">
+            <v-btn icon class="white--text" v-if="contact.websiteLink" :href="contact.websiteLink" target="_blank">
               <v-icon color="#0077b5" icon="mdi-web" size="24" class="ma-3"></v-icon>
             </v-btn>
            
-            <v-btn icon class="white--text" :href="contact.linkedIn" target="_blank">
+            <v-btn icon class="white--text" v-if="contact.linkedIn" :href="contact.linkedIn" target="_blank">
              
                  <v-icon color="#0077b5" icon="mdi-linkedin" size="24" class="ma-3"></v-icon>
             </v-btn>
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import  dummyData  from './dummydata';
+// import  dummyData  from './dummydata';
 
 export default {
   name: "ContactDetailsCard",

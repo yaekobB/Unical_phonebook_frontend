@@ -10,11 +10,7 @@
     >
       {{ snackbarStore.message }}
 
-      <!-- <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="snackbarStore.closeSnackbar">
-          Close
-        </v-btn>
-      </template> -->
+     
     </v-snackbar>
   </v-sheet>
 </template>
@@ -23,9 +19,12 @@
 import { useSnackbarStore } from './store'
 
 export default {
-  setup() {
-    const snackbarStore = useSnackbarStore()
-    return { snackbarStore }
+  data() {
+    
+    return { snackbarStore: useSnackbarStore() }
   }
 }
 </script>
+<style scoped>
+
+</style>

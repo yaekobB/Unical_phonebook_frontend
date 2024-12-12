@@ -7,6 +7,7 @@ import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
+
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -26,6 +27,7 @@ export default defineConfig({
         configFile: 'src/styles/settings.scss',
       },
     }),
+     
     Components(),
     Fonts({
       google: {
@@ -46,7 +48,22 @@ export default defineConfig({
       vueTemplate: true,
     }),
   ],
-  define: { 'process.env': {} },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    transformMode: {
+      web: [/\.vue$/, /\.css$/], // Use for Vue file transformation
+    },
+    
+  },
+    css: {
+      // Allow CSS files to be processed during tests
+      modules: false,  // Set to `true` if you want CSS modules
+    },
+  define: { 'process.env': {},
+  global: 'window', // Map `global` to `window` for browser compatibility
+
+},
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -63,5 +80,12 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    proxy: {
+      '/gs-guide-websocket': {
+        target: 'http://localhost:8084',
+        ws: true, // Enable WebSocket proxying
+        changeOrigin: true, // Change origin to match the target
+      },
+    }
   },
 })
