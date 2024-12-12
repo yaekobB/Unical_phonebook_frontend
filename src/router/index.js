@@ -16,9 +16,12 @@ import Dashboard from '../components/Dashboard/Dashboard.vue'
 import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
+import forgetPassword from '../components/forgotPassword/forgetPassword.vue'
 // import { routes } from 'vue-router/auto-routes'
 
+
 const  routes = [
+  {path: '/forgot-password', name: 'forgetPassword', component: forgetPassword},
   { path: '/', name:"phonebook", component: Phonebook },
   { path: '/sign-in', name:"signin", component: SignIn },
   { path: '/sign-up', name:"signup", component: SignUp },
@@ -57,7 +60,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/','/sign-in','/sign-up'];
+  const publicPages = ['/','/sign-in','/sign-up','/forgot-password'];
   const authRequired = !publicPages.includes(to.path);
   
   // Redirect to login page if page requires authentication and user is not logged in
