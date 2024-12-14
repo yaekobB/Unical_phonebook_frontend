@@ -18,10 +18,13 @@ import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
 import forgotPassword  from '../components/forgotPassword/forgotPassword.vue'
+import changePassword from '@/components/changePassword/changePassword.vue'
+import { components } from 'vuetify/dist/vuetify-labs.js'
 // import { routes } from 'vue-router/auto-routes'
 
 
 const  routes = [
+  {path: "/change-password", name: 'changePassword', component: changePassword},
   {path: '/forgot-password', name: 'forgotPassword', component: forgotPassword},
   { path: '/', name:"phonebook", component: Phonebook },
   { path: '/sign-in', name:"signin", component: SignIn },
@@ -69,7 +72,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/','/sign-in','/sign-up','/forgot-password'];
+  const publicPages = ['/','/sign-in','/sign-up','/forgot-password','/change-password'];
   const authRequired = !publicPages.includes(to.path);
   
   // Redirect to login page if page requires authentication and user is not logged in
