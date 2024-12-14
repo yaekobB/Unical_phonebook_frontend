@@ -14,7 +14,7 @@
         </v-card-title>
         <v-card-text class="pa-2">
           <v-form v-model="valid" ref="form">
-            <v-text-field v-if="!isCode"
+            <v-text-field 
               v-model="email"
               prepend-inner-icon="mdi-email"
               density = "comfortable"
@@ -29,7 +29,7 @@
             <v-row>
               <v-col class="d-flex justify">
                 <v-btn
-                  color="secondary"
+                  color="error"
                   @click="cancel"
                   rounded
                 >
@@ -115,10 +115,10 @@
               variant ="outlined"
               @click:append-inner="togglePasswordVisibility"
             ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-text class=" mb-0 pa-2">
-          <v-form v-model="valid" ref="form">
+          <!-- </v-form> -->
+        <!-- </v-card-text> -->
+        <!-- <v-card-text class=" mb-0 pa-2"> -->
+          <!-- <v-form v-model="valid" ref="form"> -->
             <v-text-field 
               v-model="confirmPassword"
               prepend-inner-icon="mdi-lock"
@@ -145,14 +145,18 @@
                  Reset
                </v-btn>
               </v-col>          
-           </v-row>
+           </v-row>    
       </v-card>
+      <Snackbar/>
     </v-container>
   </template>
   <script>
-  import apiClient from '@/services/axios'
+  // import apiClient from '@/services/axios'
+  import Snackbar from '@/components/snackbar/Snackbar.vue';
+  import { useForgotPasswordStore } from './store';
   export default {
-    data() {
+    components: {Snackbar},
+    data() {    
       return {
         email: '',
         password:'',
@@ -179,53 +183,59 @@
   },
     methods: {
       async sendCode() {
-           try{
-            const response = await apiClient.put("/user/checkemail/"+this.email
-          //   ,{
-          //     params: {email: this.email},
-          // }
-        );
-            console.log("Email then-:",response);
-            this.step = 2;
-          } catch (error) {
-            console.error(error);
-            alert("Failed to send reset code. Please try again.");
-      }
+          //  try{
+            const useForgotPassword = useForgotPasswordStore();
+             const response = await useForgotPassword.sendCode(this.email);
+            // const response = await apiClient.put("/user/checkemail/"+this.email);
+            console.log("IsCodeSent", useForgotPassword.isCodeSent);
+            if(useForgotPassword.isCodeSent){
+              this.step = 2;
+              useForgotPassword.isCodeSent =false;
+            }
+              
     },
       async verifyCode(){
-        try{
+        // try{
           console.log("Sending request with:", {
           email: this.email,
           verificationCode: this.code,
        });
-          const response = await apiClient.put("/user/send-reset-code", {
-            verificationCode: this.code,
-            email: this.email,
-           });
-           console.log("Verified Code: ", response);
-           this.step = 3;
-        } catch (error) {
-          console.error(error);
-          alert("Invalid code. Please try again.");
-      }        
+          //  const response = await apiClient.put("/user/send-reset-code", {
+          //   verificationCode: this.code,
+          //   email: this.email,
+          //  });
+          const useForgotPassword = useForgotPasswordStore();
+           await useForgotPassword.verifyCode(this.code);
+          console.log("isCodeVerified: ", useForgotPassword.isCodeVerified);
+          if(useForgotPassword.isCodeVerified){
+            this.step = 3;
+          }      
+          // let credentials = {
+          //   email: this.email,
+          //   verificationCode : this.code
+          // };
+  
       },
       async resetPassword(){
-        try{
-          const response = await apiClient.put("user/forgot-password",{
-            email: this.email,
-            password: this.password
-          });
-          console.log("Reset success: ", response);
-          
-            alert("Password reset successfully!");
-            this.$router.push("/sign-in"); 
-        } catch (error) {
-          console.error(error);
-          alert("Failed to reset  password. Please try again.");
-      }  
+        // try{
+          console.log("Sending request with:", {
+          email: this.email,
+          password: this.newPassword,
+       });
+          // const response = await apiClient.put("user/forgot-password",{
+          //   email: this.email,
+          //   password: this.newPassword
+          // });
+          // console.log("Reset success: ", response);
+           const useForgotPassword = useForgotPasswordStore();
+           useForgotPassword.resetPassword(this.newPassword);
+
     },    
       cancel(){
-       this.$router.push("/sign-in");
+      //  this.$router.push("/sign-in");
+        const useForgotPassword = useForgotPasswordStore();
+        useForgotPassword.cancel();
+
       } ,
       togglePasswordVisibility(){
         this.showPassword =!this.showPassword;
