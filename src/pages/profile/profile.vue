@@ -200,9 +200,7 @@ import { useForgotPasswordStore } from '../../components/forgotPassword/store';
      this.userDetail.fullName= this.userDetail.firstName +' '+ this.userDetail.middleName +' '+ this.userDetail.lastName     
     },
     async changePassword(){
-        //try{
-          
-          // this.userDetail  = JSON.parse(localStorage.getItem('userInformation'));
+        
           console.log("User Information: ", this.userDetail);
           console.log("CP Sending request with: ", {
             email: this.userDetail.email,
@@ -218,11 +216,12 @@ import { useForgotPasswordStore } from '../../components/forgotPassword/store';
             newPassword: this.newPassword,
             oldPassword:this.oldPassword,
           }
-          useChangePassword.changePassword(credentials);
-          console.log("isPasswordChanged: ", useChangePassword.isPasswordChanged);
-
+           const response = await useChangePassword.changePassword(credentials);
+          console.log("isPasswordChanged: 1", useChangePassword.isPasswordChanged);
+          //this.dialog = !this.dialog;
           if(useChangePassword.isPasswordChanged){
              this.dialog = !this.dialog;
+             console.log("dialog", this.dialog);
              useChangePassword.isPasswordChanged = false;
           }
     },    

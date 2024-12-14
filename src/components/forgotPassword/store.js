@@ -100,7 +100,9 @@ export const useForgotPasswordStore = defineStore('ForgotPasswordStore', {
             const response = await apiClient.put("/user/changepassword",credentials);
             console.log("Change Password: ",response);
             if(response.data){
+                //this.isPasswordChanged = true;
                 this.isPasswordChanged = true;
+                console.log('store/isPasswordChanged:', this.isPasswordChanged);
                 this.snackbarStore.showSnackbar({
                     message: "Password Changed Successfully",
                     color: "success",
