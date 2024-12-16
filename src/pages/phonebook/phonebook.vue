@@ -16,7 +16,7 @@
                         placeholder="Search Surname"
                         append-inner-icon="mdi-magnify"
                         style="max-width: 300px;"
-                        @click:append-inner="searchFilter(search)"
+                        @click:append-inner="searchFilter()"
                         variant="outlined"
                        
                         hide-details
@@ -29,6 +29,7 @@
                         variant="outlined"
                         density="compact"
                         :items="departments"
+                        item-title="departmentName"
                         hide-details
                         rounded
                         class="ma-2"
@@ -40,6 +41,7 @@
                         variant="outlined"
                         density="compact"
                         :items="roles"
+                        item-title="roleName"
                         hide-details
                         rounded
                         class="ma-2"
@@ -120,8 +122,10 @@ import Footer from '@/components/Footer/footer.vue'
 import CardView from '@/pages/phonebook/card-view.vue'
 import TableView from '@/pages/phonebook/table-view.vue'
 import { useUserStore } from '@/pages/user-account/store';
+import {useDepartmentStore} from '@/pages/department/store'
+import {useRoleStore} from '@/pages/role/store'
 // import roles from '@/services/roles'
-import departments from '@/services/departments'
+// import departments from '@/services/departments'
 export default{
     name:'Phonebook',
     components:{
@@ -133,13 +137,15 @@ export default{
     data(){
         return {
             userStore: useUserStore(),
-            roles: ["Student", "Faculty","Administrative"],
-            departments: departments,
+            departmentStore: useDepartmentStore(),
+            roleStore: useRoleStore(),
+            roles: [],
+            departments: [],
             contacts:[],
             viewStat: 'card',
             selectedDepartments:null,
             selectedRoles:null,
-            pageLimit: 10,
+            pageLimit: 8,
             search: '',
             totalPage:0,
             currentPage:1,
@@ -156,28 +162,29 @@ export default{
     watch: {
     // Fetch data whenever the current page changes
     currentPage() {
-      this.controlPagination('');
+      this.controlPagination();
     },
     selectedDepartments(){
-        this.controlPagination(this.selectedDepartments);
+        this.controlPagination();
     },
     selectedRoles(){
-        this.controlPagination(this.selectedRoles)
-    }
+        this.controlPagination()
+    },
 
-    // search(){
-    //  this.controlPagination()
-    //  console.log(this.search)
-    // }
+    search(){
+     this.controlPagination()
+     console.log(this.search)
+    }
   },
     methods:{
         toggleView(view){
             this.viewStat = view
         },
-       async controlPagination(searchKey){
+       async controlPagination(){
+        console.log(this.selectedDepartments)
         // console.log("Control pagination called")
            // the fourth parameter is isPublic value which is true for public request
-             await this.userStore.getUsers(this.pageLimit, this.currentPage, searchKey,true);
+             await this.userStore.getUsers(this.pageLimit, this.currentPage, this.search,this.selectedRoles, this.selectedDepartments,true);
              this.contacts = this.userStore.users
              if(this.contacts.length> 0){
                  this.totalPage = Math.ceil(this.contacts[0].totalUsers / this.pageLimit)
@@ -186,15 +193,21 @@ export default{
              
     
         },
-        searchFilter(searchKey){
-            this.pageLimit = 25
+        searchFilter(){
+            this.pageLimit = 8
             this.currentPage = 1
-            this.controlPagination(searchKey)
+            this.controlPagination()
         }
 
     },
     async mounted() {
         this.controlPagination()
+       await this.departmentStore.getDepartments()
+       await this.roleStore.getRoles()
+
+        this.departments = this.departmentStore.departments
+        this.roles = this.roleStore.roles
+        console.log(this.departmentStore.departments)
             // await this.userStore.getUsers('','','');
             // this.totalPage = Math.ceil( this.userStore.users.length / this.pageLimit)
      

@@ -13,7 +13,9 @@ import { useUserStore } from './store';
 import dataTable from '../../components/data-table/data-table.vue';
 
 import Snackbar from '@/components/snackbar/Snackbar.vue';
-import { useSideNavStore } from '@/components/side-nav/store';
+import { useDepartmentStore } from '../department/store';
+import {useRoleStore} from '../role/store'
+// import { useSideNavStore } from '@/components/side-nav/store';
 // import { toRaw } from 'vue';
 export default {
   components: { dataTable, Snackbar },
@@ -22,6 +24,8 @@ export default {
     return {
      
     userStore: useUserStore(),
+    departmentStore:useDepartmentStore(),
+    roleStore: useRoleStore()
       
     };
   },
@@ -29,19 +33,26 @@ export default {
  async created() {
     const tableStore = useTableStore();
     const userStore = useUserStore();
-    const navSideStore = useSideNavStore();
+    // const navSideStore = useSideNavStore();
     // const columns = toRaw(userStore.tableColumns);
-    navSideStore.setNavigations(userStore.navItems)
+    // navSideStore.setNavigations(userStore.navItems)
     tableStore.setColumns(userStore.tableColumns);
     tableStore.setFormFields(userStore.formFields);
     tableStore.setDialogTitle(userStore.dialogTitle);
+    tableStore.setComponentName(userStore.componentName)
+
     tableStore.setIcon(userStore.icon)
     await userStore.getUsers();
     console.log(userStore.users)
     
-    // console.log(columns)
-    // Optionally, initialize with some items
+    
     tableStore.initializeItems(userStore.users);
+    console.log(userStore.users)
+    await this.departmentStore.getDepartments()
+    await this.roleStore.getRoles()
+
+    userStore.setDepartments(this.departmentStore.departments)
+    userStore.setRoles(this.roleStore.roles)
     // tableStore.initializeItems([
     //   {id:"1", firstName:"Robel", middleName:"Gebrehiwot", lastName:"Brhane", userRole:"Admin",email:"robel@unical.it",phoneNumber:"+393511141072"}
     // ])

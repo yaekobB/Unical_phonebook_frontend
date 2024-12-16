@@ -11,8 +11,12 @@ import SignIn from '../layouts/SignIn/SignIn.vue'
 import SignUp from '@/layouts/SignUp/sign-up.vue'
 // import Test from '../components/data-table/test/test.vue'
 import Test from '../components/snackbar/test'
+import Chat from '@/pages/chat/chat.vue'
 import UserAccount from '../pages/user-account/user-account.vue'
 import Dashboard from '../components/Dashboard/Dashboard.vue'
+import Department from '@/pages/department/department.vue'
+import Role from '@/pages/role/role.vue'
+
 import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
@@ -23,22 +27,55 @@ const  routes = [
   { path: '/sign-in', name:"signin", component: SignIn },
   { path: '/sign-up', name:"signup", component: SignUp },
   { path: '/test', component: Test},
+  { path:'/chat',
+    name:'chats', 
+    component: Dashboard,
+    meta: { authorize: [userRole.admin,userRole.student, userRole.faculty, userRole.administrative] },
+    children:[
+      {path:'', name:"chat", component:Chat}
+    ]
+  },
   { 
     path:'/users', 
     name:"users",
     component: Dashboard,
     meta: { authorize: [userRole.admin] },
     children:[
-      { path: '', name:"user", component: UserAccount},
+      { path: '', name:"user1", component: UserAccount},
+      
 
     ]
 
   },
-  {path:'/profile', name:"profile",
+  { 
+    path:'/roles', 
+    name:"roles",
+    component: Dashboard,
+    meta: { authorize: [userRole.admin] },
+    children:[
+      { path: '', name:"role", component: Role},
+      
+
+    ]
+
+  },
+  { 
+    path:'/departments', 
+    name:"departments",
+    component: Dashboard,
+    meta: { authorize: [userRole.admin] },
+    children:[
+      { path: '', name:"department", component: Department},
+      
+
+    ]
+
+  },
+  {path:'/profile', name:"profiles",
   component: Dashboard,
   meta: { authorize: [userRole.admin,userRole.student, userRole.faculty, userRole.administrative] },
   children:[
-    { path: '', name:"profile", component: Profile},
+    { path: '', name:"profile1", component: Profile},
 
   ]
 

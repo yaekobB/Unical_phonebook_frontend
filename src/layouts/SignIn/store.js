@@ -36,18 +36,25 @@ export const useSignInStore = defineStore('signInStore', {
             //     color: 'success',
             //     timeout: 3000
             //   })
-            let localStorageVariable = {userRole: response.data.userType, token: response.data.accessToken}
+           
+            let localStorageVariable = {userRole: response.data.userType, token: response.data.accessToken, userId:response.data.userId}
             localStorage.setItem("signInUser",JSON.stringify(localStorageVariable))
-            if(localStorage.signInUser){
+            // localStorage.setItem("userInformation",JSON.stringify(response.data))
+            this.userStore.getUser(localStorageVariable.userId)
+            
+                    
               let localStoredUserRole = JSON.parse(localStorage.signInUser).userRole
               if(localStoredUserRole == userRole.admin){
-                console.log("true")
+                // console.log("true")
+                // this.userStore.getUser(localStorageVariable.userId)
+
                 this.userStore.getUsers()
                 router.push('users')
               }else{
+                // this.userStore.getUser(localStorageVariable.userId)
                 router.push('profile')
               }
-            }
+            
         }
         
         console.log(response.data)

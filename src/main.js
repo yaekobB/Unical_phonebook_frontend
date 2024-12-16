@@ -16,5 +16,6 @@ import { createApp } from 'vue'
 const app = createApp(App)
 
 registerPlugins(app)
+// window.global = window
 
 app.mount('#app')

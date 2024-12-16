@@ -1,0 +1,19 @@
+Todo:
+  ✔ fix freightprice route in the frontend @done
+  ☐ fix [get commericialorder by status] requests on both the frontend and backend.
+  ☐ add 'Write Commerical Order' authorization
+  ☐ staff signup and views funs
+  ✔ add 'Get All Employees' auth @done
+  ✔ edit actions for staff accounts @done
+  ☐ passwords shouldn't be shown in the edit box (frontend).
+  ✔  password text field on account signup should be of type password (frontend) @done
+  ☐ add customer/managers name etc... backend&frontend.
+  ✔ vehicle, carriage and driver ['create','update'] in the backend @done
+  ✔  vehicle, carriage and driver registration and edit UI @done  
+  
+  Design Issues:
+    ☐ customer's payment methods should be decided upon commercial orders and payment method attr in customers model should be part of maybe on orders?
+    ☐ customer's priorities should may be part of orders
+    ☐ 
+
+
