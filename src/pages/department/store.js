@@ -166,7 +166,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
                     timeout: 3000
                   })
             }else{
-            //  await this.getDepartments()
+             await this.getDepartments()
+             this.tableStore.initializeItems(this.departments)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully registered",
                 color: 'success',
@@ -201,7 +203,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
                     timeout: 3000
                   })
             }else{
-            //  await this.getDepartments()
+             await this.getDepartments()
+             this.tableStore.initializeItems(this.departments)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
@@ -238,7 +242,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
                     timeout: 3000
                   })
             }else{
-            // await this.getDepartments()
+            await this.getDepartments()
+            this.tableStore.initializeItems(this.departments)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully Deleted",
                 color: 'success',

@@ -6,6 +6,7 @@ import { useDepartmentStore } from '../department/store'
 import { useRoleStore } from '../role/store'
 // import departments from '@/services/departments'
 import router from '@/router/index';
+import userRole from '@/services/userRole'
 
 // import roles from '@/services/roles'
 export const useUserStore = defineStore('userStore', {
@@ -262,7 +263,7 @@ export const useUserStore = defineStore('userStore', {
       
         try {
           
-            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&role=${role}&department=${department}`
+            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&roleId=${role}&departmentId=${department}`
             const response = await apiClient.get(url);
             // console.log(response.data)
             if(response.data.error){
@@ -381,7 +382,9 @@ export const useUserStore = defineStore('userStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully registered",
                 color: 'success',
@@ -403,9 +406,14 @@ export const useUserStore = defineStore('userStore', {
     async setEditUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
+          console.log("@Editing a user ++++++")
+          console.log(user)
           user.departmentId =  this.findDepartmentId(user.departmentName)
           user.roleId = this.findRoleId(user.roleName)
-          user.userType = user.roleId
+          user.userType = user.roleName
+
+          console.log(user.departmentId)
+          console.log(user.roleId)
            
             const response = await apiClient.put(`/user/${user.userId}`,{...user});
             this.data = response.data;
@@ -417,7 +425,9 @@ export const useUserStore = defineStore('userStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.getUser(this.data.userId)
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
@@ -455,7 +465,9 @@ export const useUserStore = defineStore('userStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
@@ -496,7 +508,7 @@ export const useUserStore = defineStore('userStore', {
                   })
             }else{
               console.log("successfully enabled or disabled")
-             this.getUsers()
+            //  await this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
@@ -531,7 +543,9 @@ export const useUserStore = defineStore('userStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully Deleted",
                 color: 'success',
@@ -651,7 +665,7 @@ export const useUserStore = defineStore('userStore', {
     },
     findRoleId(role){
       const roleId =  this.roleStore.roles.filter(r => r.roleName == role)
-      console.log(roleId.roleId)
+      // console.log(roleId.roleId)
       return roleId[0].roleId
     },
    
