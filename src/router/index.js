@@ -5,7 +5,7 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
+// import { createRouter, createWebHistory } from 'vue-router/auto'
 // import { setupLayouts } from 'virtual:generated-layouts'
 import SignIn from '../layouts/SignIn/SignIn.vue'
 import SignUp from '@/layouts/SignUp/sign-up.vue'
@@ -21,13 +21,13 @@ import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
 import forgotPassword  from '../components/forgotPassword/forgotPassword.vue'
-import changePassword from '@/components/changePassword/changePassword.vue'
-import { components } from 'vuetify/dist/vuetify-labs.js'
+// import changePassword from '@/components/changePassword/changePassword.vue'
+// import { components } from 'vuetify/dist/vuetify-labs.js'
 // import { routes } from 'vue-router/auto-routes'
 
 
 const  routes = [
-  {path: "/change-password", name: 'changePassword', component: changePassword},
+  // {path: "/change-password", name: 'changePassword', component: changePassword},
   {path: '/forgot-password', name: 'forgotPassword', component: forgotPassword},
   { path: '/', name:"phonebook", component: Phonebook },
   { path: '/sign-in', name:"signin", component: SignIn },
