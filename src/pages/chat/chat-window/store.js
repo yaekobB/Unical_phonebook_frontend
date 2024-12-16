@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
+import { useUserStore } from '@/pages/user-account/store';
 export const useChatWindowStore = defineStore('chatWindowStore', {
   state: () => ({
     messages: [
@@ -13,6 +14,7 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
     recipientId:'',
     senderId:'',
     chatRoomId:'',
+    userStore: useUserStore()
   }),
 
   actions: {
@@ -46,6 +48,7 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
             // }
          
             // const messageParsed = JSON.parse(message.body);
+            console.log(msg)
             this.messages.push(msg);
           });
         },
@@ -58,10 +61,16 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
    
     async setChatMessage(message){
         console.log("Set ChatWindow called")
-        let userId = JSON.parse(localStorage.userInformation).userId
-        this.recipientName = message.fullName
+        console.log(message)
+       if(message.createdBy){
+        this.recipientName = message.createdBy
+        this.recipientId = message.createrId
+       }else{
+        this.recipientName = message.fullName,
         this.recipientId = message.userId
-        this.senderId = userId
+       }
+       
+        this.senderId = this.userStore.user.userId
        
         console.log(this.recipientName)
         console.log(this.recipientId)

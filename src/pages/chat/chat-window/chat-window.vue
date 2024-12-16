@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <!-- Chat Header -->
-        <v-card class="chat-card" variant="outlined">
+        <v-card class="chat-card" variant="outlined" v-if="chatWindowStore.recipientName">
           <v-card-title class="chat-header">
             <v-avatar left>
               <v-icon large>mdi-chat</v-icon>
@@ -35,7 +35,7 @@
               v-model="newMessage"
               placeholder="Type your message..."
               clearable
-            
+              
               variant="outlined"
               density="comfortable"
               append-inner-icon="mdi-send"
@@ -133,7 +133,7 @@ export default {
 }
 .message-card {
   display: inline-block;
-  max-width: 50%;
+  max-width: 75%;
   margin: 5px 0;
   padding: 8px 12px;
   word-wrap: break-word;
@@ -149,6 +149,6 @@ export default {
 .chat-input {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
 }
 </style>
