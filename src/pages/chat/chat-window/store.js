@@ -4,6 +4,7 @@ import apiClient from '@/services/axios'
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import { useUserStore } from '@/pages/user-account/store';
+import { useChatListStore } from '../chat-list/store';
 export const useChatWindowStore = defineStore('chatWindowStore', {
   state: () => ({
     messages: [
@@ -14,11 +15,12 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
     recipientId:'',
     senderId:'',
     chatRoomId:'',
-    userStore: useUserStore()
+    userStore: useUserStore(),
+    chatListStore:useChatListStore()
   }),
 
   actions: {
-    connect() {
+     connect() {
       this.socket = new SockJS("http://localhost:8084/gs-guide-websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
@@ -50,6 +52,8 @@ export const useChatWindowStore = defineStore('chatWindowStore', {
             // const messageParsed = JSON.parse(message.body);
             console.log(msg)
             this.messages.push(msg);
+            this.chatListStore.getChatList()
+
           });
         },
         (error) => {
