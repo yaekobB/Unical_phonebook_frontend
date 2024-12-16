@@ -50,22 +50,22 @@
                         <img :src="item.avatar" alt="User Avatar" />
                       </v-avatar> -->
                       <v-avatar  class="text-h6 font-weight-bold mr-2" color="red-darken-4">
-                              {{item.avatar}}
+                              {{userInitials(item.createdBy)}}
                       </v-avatar>
 
-                      <strong class="ml-4"> {{item.fullName}}</strong>
+                      <strong class="ml-4"> {{item.createdBy}}</strong>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
                       <!-- <v-list-item-title>{{ chat.name }}</v-list-item-title> -->
                       <v-list-item-subtitle class="last-message ma-2">
-                        {{ item.lastMessage }}
+                        {{ item.content }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
 
                     <v-list-item-action>
                       <v-spacer></v-spacer>
-                      <v-list-item-subtitle class="timestamp mr-2">{{ item.timestamp }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="timestamp mr-2">{{ reformatTimestamp(item.updatedAt) }}</v-list-item-subtitle>
                       <v-icon v-if="!item.isRead" color="black-lighten-4">mdi-circle</v-icon>
                     </v-list-item-action>
                   </v-list-item>
@@ -127,6 +127,42 @@ export default {
       this.chatWindowStore.setChatMessage(chat)
 
     },
+    userInitials(fullName) {
+      const nameParts = fullName.trim().split(' ');
+
+    // Ensure there are at least two parts (Given Name and Surname)
+    
+        const firstName = nameParts[0];
+        const lastName = nameParts[nameParts.length - 1];
+        return firstName[0].toUpperCase() + lastName[0].toUpperCase();
+    
+      
+    },
+    reformatTimestamp(timestamp) {
+   const now = new Date(); // Current date and time
+    const date = new Date(timestamp); // Parse the given timestamp
+
+    // Calculate the difference in milliseconds
+    const timeDifference = date.getTime() - now.getTime();
+
+    // Check if the date is within a week from now
+    const oneWeek = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+    if (timeDifference <= oneWeek && timeDifference >= 0) {
+        const day = date.toLocaleString('en-US', { weekday: 'short' }); // e.g., "Mon"
+        const month = date.toLocaleString('en-US', { month: 'short' }); // e.g., "Dec"
+        const year = date.getFullYear(); // e.g., 2024
+        return `${day} ${month} ${year}`;
+    }
+
+    // Otherwise, format as "YYYY-MM-DD HH:mm" (no seconds)
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as 2 digits
+    const day = String(date.getDate()).padStart(2, '0'); // Day as 2 digits
+    const hours = String(date.getHours()).padStart(2, '0'); // Hours as 2 digits
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // Minutes as 2 digits
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+    
   },
  async created(){
     await this.chatListStore.getUsers()

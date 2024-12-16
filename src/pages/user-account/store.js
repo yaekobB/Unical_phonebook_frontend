@@ -2,24 +2,29 @@ import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
 import { useSnackbarStore } from '@/components/snackbar/store'
 import { useTableStore } from '@/components/data-table/store'
-import departments from '@/services/departments'
+import { useDepartmentStore } from '../department/store'
+import { useRoleStore } from '../role/store'
+// import departments from '@/services/departments'
 import router from '@/router/index';
+import userRole from '@/services/userRole'
 
 // import roles from '@/services/roles'
-export const useUserStore = defineStore('userAccountStore', {
+export const useUserStore = defineStore('userStore', {
   state: () => ({
-    componentName: 'userAccount',
+    componentName: 'user',
     snackbarStore: useSnackbarStore(),
     tableStore:useTableStore(),
+    departmentStore: useDepartmentStore(),
+    roleStore: useRoleStore(),
     tableColumns: [
-      {title:'Id', key:'id',align:'start'},
+      {title:'Id', key:'__id',align:'start'},
       { title: 'First Name', key: 'firstName' },
       { title: 'Middle Name', key: 'middleName' },
       { title: 'Last Name', key: 'lastName' },
       { title: 'Email', key: 'email' },
       { title: 'Phone Number', key: 'phoneNumber' },
-      { title: 'Department', key: 'department' },
-      { title: 'Role', key: 'userType' },
+      { title: 'Department', key: 'departmentName' },
+      { title: 'Role', key: 'roleName' },
     //   { title: 'User Status', key: 'userStatus' },
       { title: 'Actions', key: 'actions', sortable: false },
     ],
@@ -140,9 +145,10 @@ export const useUserStore = defineStore('userAccountStore', {
             fieldName: "autocomplete",
             type: "autocomplete",
            
-            key: "department",
+            key: "departmentName",
+            name:"departmentName",
             prependIcon:'mdi-store',
-            items:departments,
+            items:[],
             rules:[
                 value=> !!value || 'Department is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -155,10 +161,10 @@ export const useUserStore = defineStore('userAccountStore', {
             label: "Role",
             fieldName: "autocomplete",
             type: "autocomplete",
-            key: "userType",
+            key: "roleName",
+            name:"roleName",
             prependIcon:'mdi-shield-account',
-            
-            items:["Student", "Faculty","Administrative"],
+            items:[],
             rules:[
                 value=> !!value || 'Role is required *',
                 value=> /[a-zA-Z0-9 - ]*/.test(value) || 'Invalid String',
@@ -243,7 +249,9 @@ export const useUserStore = defineStore('userAccountStore', {
         {title:"Chat", value:"chat",prependIcon:"mdi-chat",url:"chat"},
 
     ],
-    users:[]
+    users:[],
+    user:{},
+    userInitials: null
   }),
   actions:{
     async getUsers(pageLimit = 25 ,pageNumber = 1, searchKey= '', role ='', department='', isPublic = false){
@@ -255,7 +263,7 @@ export const useUserStore = defineStore('userAccountStore', {
       
         try {
           
-            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&role=${role}&department=${department}`
+            const url = `/user?limit=${pageLimit}&page=${pageNumber}&searchKey=${searchKey}&isPublic=${isPublic}&roleId=${role}&departmentId=${department}`
             const response = await apiClient.get(url);
             // console.log(response.data)
             if(response.data.error){
@@ -272,10 +280,22 @@ export const useUserStore = defineStore('userAccountStore', {
                 //     timeout: 3000
                 //   })
                 // this.users = response.data
-                  this.users = response.data.map(user =>{
+                console.log(response.data)
+                  this.users = response.data.map((user,index) =>{
                     return {
                       ...user,
-                      isActive: user.userStatus == 'Active'?true:false
+                      __id: index + 1,
+                      isActive: user.userStatus == 'Active'?true:false,
+                      departmentName: user.departmentResponseModel.departmentName,
+                      departmentId: user.departmentResponseModel.departmentId,
+                      roleName: user.roleResponseModel.roleName,
+                      roleId: user.roleResponseModel.roleId,
+                      departmentLink: user.departmentResponseModel.departmentLink
+                      // departmentName: user.department,
+                      // departmentId: this.findDepartmentId(user.department),
+                      // roleName: user.userType,
+                      // roleId: this.findRoleId(user.userType),
+
                     }
                   })
 
@@ -294,10 +314,64 @@ export const useUserStore = defineStore('userAccountStore', {
           }
 
     },
+    async getUser(userId){
+           
+    
+      try {
+        console.log("Getting a user")
+        console.log(userId)
+        
+          const url = `/user/${userId}`
+          const response = await apiClient.get(url);
+          console.log(response.data)
+          if(response.data.error){
+              // snackbarStore.showSnackbar({
+              //     message: this.data.error,
+              //     color: 'success',
+              //     timeout: 3000
+              //   })
+
+          }else{
+              // snackbarStore.showSnackbar({
+              //     message: 'Hello, this is a reusable snackbar!',
+              //     color: 'success',
+              //     timeout: 3000
+              //   })
+              // this.users = response.data
+              console.log(response.data)
+              this.user = response.data
+               
+              this.user.fullName= this.user.firstName +' '+ this.user.middleName +' '+ this.user.lastName
+              this.user.departmentName = this.user.departmentResponseModel.departmentName
+              this.user.roleName = this.user.userType
+      
+              this.userInitials = (this.user.firstName[0] + this.user.lastName[0]).toUpperCase();
+                           
+
+                
+          }
+          
+          // console.log(response.data)
+        } catch (error) {
+          // console.log('Error fetching data:', error);
+          // console.log(error.message)
+          // snackbarStore.showSnackbar({
+          //     message: error.message,
+          //     color: 'error',
+          //     timeout: 3000
+          //   })
+        }
+
+  },
     async setAddUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-                    
+            console.log("Adding user+++++++++")
+            console.log(user)
+            user.departmentId =  this.findDepartmentId(user.departmentName)
+            user.roleId = this.findRoleId(user.roleName)
+            user.userType = user.roleId
+            // const mappedUser = user.map()
             const response = await apiClient.post('/user/signup',{...user});
             this.data = response.data;
             // console.log(this.data)
@@ -308,7 +382,9 @@ export const useUserStore = defineStore('userAccountStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully registered",
                 color: 'success',
@@ -319,7 +395,7 @@ export const useUserStore = defineStore('userAccountStore', {
             console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
-           await  this.snackbarStore.showSnackbar({
+            await  this.snackbarStore.showSnackbar({
               message: error,
               color: 'error',
               timeout: 3000
@@ -330,9 +406,15 @@ export const useUserStore = defineStore('userAccountStore', {
     async setEditUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Editing user")
-            console.log(user)
-          
+          console.log("@Editing a user ++++++")
+          console.log(user)
+          user.departmentId =  this.findDepartmentId(user.departmentName)
+          user.roleId = this.findRoleId(user.roleName)
+          user.userType = user.roleName
+
+          console.log(user.departmentId)
+          console.log(user.roleId)
+           
             const response = await apiClient.put(`/user/${user.userId}`,{...user});
             this.data = response.data;
             console.log(this.data)
@@ -343,7 +425,10 @@ export const useUserStore = defineStore('userAccountStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
+             this.getUser(this.data.userId)
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
@@ -365,7 +450,7 @@ export const useUserStore = defineStore('userAccountStore', {
     async changeStatus(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Editing user")
+            console.log("change user status")
             console.log(user)
             const  status = {
               userStatus: user.userStatus == "Active"? "NotVerified":"Active"
@@ -380,7 +465,50 @@ export const useUserStore = defineStore('userAccountStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
+             this.snackbarStore.showSnackbar({
+                message: "Successfully Updated",
+                color: 'success',
+                timeout: 3000
+              })
+
+            }
+            console.log(this.data)
+          } catch (error) {
+            console.error('Error fetching data:', error);
+             await  this.snackbarStore.showSnackbar({
+              message: error,
+              color: 'error',
+              timeout: 3000
+            })
+          }
+        
+    },
+    async changePrivacy(user){
+      // const snackbarStore = useSnackbarStore();
+        try {
+           
+            const  isPrivacy = {
+              isPrivacyDisabled: !user.isPrivacyDisabled
+            }
+            console.log("at changing privacy")
+            console.log(user.userId)
+            console.log(isPrivacy)
+           
+            const response = await apiClient.put(`/user/changeprivacy/${user.userId}`,isPrivacy);
+            this.data = response.data;
+           
+            if(this.data.error){
+             this.snackbarStore.showSnackbar({
+                    message: this.data.error,
+                    color: 'error',
+                    timeout: 3000
+                  })
+            }else{
+              console.log("successfully enabled or disabled")
+            //  await this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
                 color: 'success',
@@ -415,7 +543,9 @@ export const useUserStore = defineStore('userAccountStore', {
                     timeout: 3000
                   })
             }else{
-             this.getUsers()
+             await this.getUsers()
+             this.tableStore.initializeItems(this.users)
+
              this.snackbarStore.showSnackbar({
                 message: "Successfully Deleted",
                 color: 'success',
@@ -514,6 +644,32 @@ export const useUserStore = defineStore('userAccountStore', {
       });   
       
     },
+    setDepartments(departments){
+      this.formFields.forEach(field =>{
+        if(field.name == "departmentName"){
+          field.items = departments
+        }
+      })
+    },
+    setRoles(roles){
+      this.formFields.forEach(field =>{
+        if(field.name == "roleName"){
+          field.items = roles
+        }
+      })
+    },
+    findDepartmentId(department){
+      const deptId =this.departmentStore.departments.filter(dept =>dept.departmentName == department)           
+      console.log(deptId)
+      return deptId[0].departmentId
+    },
+    findRoleId(role){
+      const roleId =  this.roleStore.roles.filter(r => r.roleName == role)
+      // console.log(roleId.roleId)
+      return roleId[0].roleId
+    },
+   
+
     // getFieldRules (key,password){
       // console.log("@user store password confirmation rule")
       // console.log(password)

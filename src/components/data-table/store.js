@@ -1,6 +1,9 @@
 // stores/tableStore.js
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/pages/user-account/store';
+import { useDepartmentStore } from '@/pages/department/store';
+import { useRoleStore } from '@/pages/role/store';
+import { capitalize } from 'vue';
 // import { toRaw } from 'vue';
 
 export const useTableStore = defineStore('tableStore', {
@@ -16,23 +19,28 @@ export const useTableStore = defineStore('tableStore', {
     icon:" ",
     formFields:[],
     switch: true,
-    userStore: useUserStore()
+    storeMap : {
+      user: useUserStore(),
+      department: useDepartmentStore(),
+      role: useRoleStore(),
+    },
+    
+    componentName: ''
   }),
   actions: {
     setColumns(newColumns) {
       this.columns = newColumns;
-      // console.log("@set columns")
-      // console.log(newColumns)
+      
     },
+    setComponentName(componentName) {
+      this.componentName = componentName;
+     },
     initializeItems(initialItems) {
-      // console.log("@Initialize Items")
-      // console.log(initialItems)
-      this.items = initialItems;
+           this.items = initialItems;
     },
     setFormFields(fields) {
       this.formFields = fields;
-      // console.log("@set fields")
-      // console.log(fields)
+     
     },
     openDialog() {
       this.dialogVisible = true;
@@ -73,41 +81,104 @@ export const useTableStore = defineStore('tableStore', {
      
       
     },
-    saveItem() {
+    async saveItem() {
       // const userStore = useUserStore();
-      if (this.editedItem.id) {
+      const store = this.storeMap[this.componentName];
+      console.log("@ SaveItem in table store==========")
+      // console.log(store)
+      // console.log(this.editedItem[`${this.componentName}Id`])
+      if (this.editedItem[`${this.componentName}Id`]) {
         console.log("@ table store editing")
-
+        
         // Edit existing item
-        const index = this.items.findIndex(item => item.id === this.editedItem.id);
+        const index = this.items.findIndex(item => item[`${this.componentName}Id`] === this.editedItem[`${this.componentName}Id`]);
         console.log(index)
         if (index !== -1) {
           this.items[index] = { ...this.editedItem };
-          this.userStore.setEditUser({...this.editedItem})
+         // Dynamically get the store
+          const actionName = `setEdit${this.capitalize(this.componentName)}`; // Construct the action name dynamically
+    
+          if (store && typeof store[actionName] === "function") {
+            console.log("at Editing item========")
+            store[actionName]({ ...this.editedItem}); 
+          
+
+          } 
+          // this.userStore.setEditUser({...this.editedItem})
+          // await store[`get${this.componentName}s`]
+
+          // await   this.initializeItems(store[`${this.componentName}s`])
+          // console.log(store[`${this.componentName}s`])
+          // console.log(this.items)
           this.closeEditDialog();
         }
       } else {
         // Add new item
         console.log("@ table store")
-        this.userStore.setAddUser({...this.editedItem})
-        this.items.push({ ...this.editedItem, id: Date.now() }); 
+        const actionName = `setAdd${this.capitalize(this.componentName)}`; // Construct the action name dynamically
+        console.log(actionName)
+        if (store && typeof store[actionName] === "function") {
+          console.log("call for adding ...")
+          store[actionName]({ ...this.editedItem}); // Pass the payload
+          
+
+        } 
+        // this.userStore.setAddUser({...this.editedItem})
+        // this.items.push({ ...this.editedItem, id: Date.now() }); 
+        // await store[`get${this.componentName}s`]
+        // await this.initializeItems(store[`${this.componentName}s`])
+        // console.log(store[`${this.componentName}s`])
+        // console.log(store[`${this.componentName}s`])
+        // console.log(this.items)
         this.closeDialog(); // Assign a new ID
       }
       
     },
-    deleteItem() {
+    async deleteItem() {
+      const store = this.storeMap[this.componentName];
+      console.log("deleting item-----------")
+      console.log(store)
       if (this.itemToDelete) {
         const index = this.items.indexOf(this.itemToDelete);
         console.log(index)
         if (index !== -1) {
-          this.userStore.setDeleteUser({...this.itemToDelete})
-          this.items.splice(index, 1);
+          const actionName = `setDelete${this.capitalize(this.componentName)}`; // Construct the action name dynamically
+          console.log(actionName)
+          if (store && typeof store[actionName] === "function") {
+            console.log("call for deleting ...")
+            store[actionName]({ ...this.itemToDelete}); 
+            
+
+          // Pass the payload
+          } 
+          // this.userStore.setDeleteUser({...this.itemToDelete})
+          // this.items.splice(index, 1);
         }
       }
+      // await store[`get${this.componentName}s`]
+     
+      //  await this.initializeItems(store[`${this.componentName}s`])
+      // console.log(store[`${this.componentName}s`])
+      // console.log(this.items)
       this.closeDeleteDialog();
     },
     changeStatus(item){
-      this.userStore.changeStatus({...item})
+      const store = this.storeMap[this.componentName];
+
+      const actionName = `changeStatus`; // Construct the action name dynamically
+      console.log(actionName)
+      if (store && typeof store[actionName] === "function") {
+        console.log("call for changing status ...")
+        store[actionName]({ ...item}); // Pass the payload
+        // store[`get${this.componentName}s`]
+        // this.initializeItems(store[`${this.componentName}s`])
+
+
+      } 
+      // this.userStore.changeStatus({...item})
+    },
+    capitalize(name){
+      return name.charAt(0).toUpperCase()+name.slice(1).toLowerCase()
     }
   },
 });

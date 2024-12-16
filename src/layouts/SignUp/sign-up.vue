@@ -56,6 +56,7 @@
                         v-model="signUpStore.editedItem[field.key]"
                         :label="field.label"
                         :items="field.items"
+                        :item-title="field.name"
                         :prepend-inner-icon="field.prependIcon"
                         :rules="field.rules"
                         variant="outlined"
@@ -159,7 +160,7 @@
             
         </v-stepper>
 
-       <Snackbar/>
+       <!-- <Snackbar/> -->
  
      
      
@@ -171,15 +172,22 @@
 <script>
 import { useUserStore } from '@/pages/user-account/store.js';
 import {useSignUpStore} from '@/layouts/SignUp/store'
+import {useDepartmentStore} from '@/pages/department/store'
+import {useRoleStore} from '@/pages/role/store'
 
 import Snackbar from '@/components/snackbar/Snackbar.vue';
   export default {
+    components:{
+      Snackbar
+    },
     data: () => ({
       isValidAdd:false,
       loading: false,
       isVerifyValid:false,
        userStore: useUserStore(),
        signUpStore: useSignUpStore(),
+      departmentStore:useDepartmentStore(),
+      roleStore: useRoleStore(),
         step: 1,
         steps: [
         'Registartion',
@@ -252,7 +260,13 @@ import Snackbar from '@/components/snackbar/Snackbar.vue';
     const userStore = useUserStore();
   
     signUpStore.setFormFields(userStore.formFields);
-    
+     await this.departmentStore.getDepartments()
+    await this.roleStore.getRoles()
+
+    userStore.setDepartments(this.departmentStore.departments)
+    console.log(this.roleStore.roles)
+    const  filterRole = this.roleStore.roles.filter(role => role.roleName !="Admin") 
+    userStore.setRoles(filterRole)
     
     
   },

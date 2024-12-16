@@ -1,13 +1,15 @@
 // stores/snackbarStore.js
 import { defineStore } from 'pinia'
 import apiClient from '@/services/axios'
+import { useUserStore } from '@/pages/user-account/store'
 
 export const useChatListStore = defineStore('chatListStore', {
   state: () => ({
     chats: [
        
       ],
-    users:[]
+    users:[],
+    userStore: useUserStore()
   }),
 
   actions: {
@@ -21,38 +23,54 @@ export const useChatListStore = defineStore('chatListStore', {
       try {
         // this.getUsers()
         console.log("get chatlist")
-        let userId = JSON.parse(localStorage.userInformation).userId
+        let userId = this.userStore.user.userId
         console.log(userId)
               
         const response = await apiClient.get(`/message/chat-room?userId=${userId}`);
+        console.log("After chal list api call")
         console.log(response.data)
         if(!response.data.error){
           // const chats = response.data.for
           const formattedMessages = [];
          
           // Using forEach to map recipient details
-          response.data.forEach(message => {
+          // response.data.forEach(message => {
             
-            // console.log(this.users)
-            // Find the recipient details based on recipientId
+          //   // console.log(this.users)
+          //   // Find the recipient details based on recipientId
            
-            const recipient = this.users.find(user => user.userId == message.recipientId);
-            console.log(message)
-            // If recipient is found, format the message
-            if (recipient) {
-              formattedMessages.push({
-                ...recipient,
-                fullName: recipient.fullName, // Recipient's name
-                lastMessage: message.lastMessage, // The message content
-                // timestamp: message.updatedAt.split("T")[0]+ '\t' + message.updatedAt.split("T")[1], // Formatting timestamp
-                isRead: false, // Assuming unread status; adapt as needed
-                avatar: this.userInitials(recipient.firstName, recipient.lastName), // Recipient's avatar
-                chatRoomId: message.chatRoomId
-              });
-              }
-            });
+          //   // const recipient = this.users.find(user => user.userId == message.recipientId);
+          //   // console.log(message)
+          //   // If recipient is found, format the message
+          //   // if (recipient) {
+          //     formattedMessages.push({
+          //       ...recipient,
+          //       fullName: message.fullName, // Recipient's name
+
+          //       lastMessage: message.lastMessage, // The message content
+          //       // timestamp: message.updatedAt.split("T")[0]+ '\t' + message.updatedAt.split("T")[1], // Formatting timestamp
+          //       isRead: false, // Assuming unread status; adapt as needed
+          //       avatar: this.userInitials(recipient.firstName, recipient.lastName), // Recipient's avatar
+          //       chatRoomId: message.chatRoomId
+          //     });
+          //     // }
+          //   });
+            // console.log(formattedMessages)
+            // formattedMessages = response.data.map(message =>{
+            //   return {
+            //     ...message,
+            //     fullName: message.CreatedBy, // Recipient's name
+
+            //     lastMessage: message.lastMessage, // The message content
+            //     // timestamp: message.updatedAt.split("T")[0]+ '\t' + message.updatedAt.split("T")[1], // Formatting timestamp
+            //     isRead: false, // Assuming unread status; adapt as needed
+            //     avatar: this.userInitials(message.firstName, message.lastName), // Recipient's avatar
+            //     chatRoomId: message.chatRoomId
+            //   }
+            // })
+            console.log("Format Messages in Chat List==================")
             console.log(formattedMessages)
-           this.setChatList(formattedMessages)
+           this.setChatList(response.data)
 
         }      
                
@@ -105,8 +123,16 @@ export const useChatListStore = defineStore('chatListStore', {
       }
     },
 
-    userInitials(firstName, lastName) {
-      return `${firstName[0]}${lastName[0]}`.toUpperCase();
+    userInitials(fullName) {
+      const nameParts = fullName.trim().split(' ');
+
+    // Ensure there are at least two parts (Given Name and Surname)
+    
+        const firstName = nameParts[0];
+        const lastName = nameParts[nameParts.length - 1];
+        return firstName[0].toUpperCase() + lastName[0].toUpperCase();
+    
+      
     },
     
   },
