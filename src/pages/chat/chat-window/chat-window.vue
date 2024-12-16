@@ -19,6 +19,7 @@
               :class="{'my-message': message.sender}"
             >
               <v-card
+                 v-if="message.content"
                 class="message-card"
                 :class="{'my-message-card': message.sender}"
                 outlined
@@ -56,6 +57,7 @@
 
 <script>
 import { useChatWindowStore } from '@/pages/chat/chat-window/store'
+import { useChatListStore } from '../chat-list/store';
 // import stompService from '@/services/socket/client/client-socket'
 
 
@@ -65,6 +67,7 @@ export default {
       newMessage: '',
       isMe: true,
       chatWindowStore: useChatWindowStore(),
+      chatListStore:useChatListStore(),
       messages: [], // Store received messages
       socket: null,
       stompClient: null,
@@ -72,7 +75,7 @@ export default {
     };
   },
   methods: {
-    sendMessage() {
+    async sendMessage() {
       if (this.newMessage.trim()) {
         console.log("Sending message");
         const message = { 
@@ -83,6 +86,7 @@ export default {
         };
         console.log(message);
         this.chatWindowStore.sendMessage(message)
+        // await this.chatListStore.getChatList()
         // stompService.sendMessage('/app/chat', { ...message });
         this.newMessage = '';
       }

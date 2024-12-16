@@ -160,7 +160,8 @@ export const useRoleStore = defineStore('roleStore', {
                     timeout: 3000
                   })
             }else{
-            
+              await this.getRoles()
+              this.tableStore.initializeItems(this.roles)
              this.snackbarStore.showSnackbar({
                 message: "Successfully registered",
                 color: 'success',
@@ -168,8 +169,7 @@ export const useRoleStore = defineStore('roleStore', {
               })
 
             }
-             await this.getRoles()
-            console.log(this.data)
+             
           } catch (error) {
             console.error('Error fetching data:', error);
             await  this.snackbarStore.showSnackbar({
@@ -194,7 +194,8 @@ export const useRoleStore = defineStore('roleStore', {
                     timeout: 3000
                   })
             }else{
-             this.getRoles()
+              await this.getRoles()
+            this.tableStore.initializeItems(this.roles)
              this.getRole(this.data.roleId)
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
@@ -239,11 +240,9 @@ export const useRoleStore = defineStore('roleStore', {
               })
 
             }
-            this.getRoles()
-            this.tableStore.initializeItems(...this.roles)
-            console.log(this.roles)
-            console.log(this.tableStore.items)
-            console.log(this.data)
+            await this.getRoles()
+            this.tableStore.initializeItems(this.roles)
+           
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({

@@ -182,9 +182,21 @@ export default{
         },
        async controlPagination(){
         console.log(this.selectedDepartments)
+        let departmentId = null
+        let roleId = null
+
+        if(this.selectedDepartments){
+             departmentId = this.userStore.findDepartmentId(this.selectedDepartments)
+      
+        }
+        if(this.selectedRoles){
+              roleId = this.userStore.findRoleId(this.selectedRoles)
+        }
+        console.log(departmentId)
+        console.log(roleId)
         // console.log("Control pagination called")
            // the fourth parameter is isPublic value which is true for public request
-             await this.userStore.getUsers(this.pageLimit, this.currentPage, this.search,this.selectedRoles, this.selectedDepartments,true);
+             await this.userStore.getUsers(this.pageLimit, this.currentPage, this.search,roleId, departmentId,true);
              this.contacts = this.userStore.users
              if(this.contacts.length> 0){
                  this.totalPage = Math.ceil(this.contacts[0].totalUsers / this.pageLimit)
