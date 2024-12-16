@@ -124,7 +124,6 @@ export default {
   font-size: 1.5rem;
   color: #333;
 }
-
 .v-card-title, .v-text-field label, .v-btn {
   font-family: 'Poppins', sans-serif;
 }
