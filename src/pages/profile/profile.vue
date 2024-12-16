@@ -64,7 +64,7 @@
               Edit Profile
             </v-btn>
             
-            <v-btn  color="red-darken-4" block variant="outlined" size="large" rounded>
+            <v-btn  color="red-darken-4" block variant="outlined" size="large" rounded @click="toggleDialog">
               <v-icon left>mdi-lock-reset</v-icon>
               Change Passowrd
             </v-btn>
@@ -300,20 +300,20 @@ export default {
   methods:{
 
      getUserDetail(){
-      this.userDetail = JSON.parse(localStorage.getItem('userInformation'))
-     this.userDetail.fullName= this.userDetail.firstName +' '+ this.userDetail.middleName +' '+ this.userDetail.lastName     
+      // this.userDetail = JSON.parse(localStorage.getItem('userInformation'))
+    //  this.userDetail.fullName= this.userDetail.firstName +' '+ this.userDetail.middleName +' '+ this.userDetail.lastName     
     },
     async changePassword(){
         
-          console.log("User Information: ", this.userDetail);
-          console.log("CP Sending request with: ", {
-            email: this.userDetail.email,
-            newPassword: this.newPassword,
-            oldPassword:this.oldPassword,
-          });
+          // console.log("User Information: ", this.userDetail);
+          // console.log("CP Sending request with: ", {
+          //   email: this.userStore.user.email,
+          //   newPassword: this.newPassword,
+          //   oldPassword:this.oldPassword,
+          // });
           
           const useChangePassword = useForgotPasswordStore();
-          this.email = this.userDetail.email;
+          this.email = this.userStore.user.email;
 
           let credentials ={
             email: this.email,
@@ -338,7 +338,7 @@ export default {
         toggleConfirmPasswordVisibility(){
           this.showConfirmPassword =!this.showConfirmPassword;
         },
-      toggleDialog(){
+    toggleDialog(){
         this.dialog = !this.dialog;
       },
       cancel(){
