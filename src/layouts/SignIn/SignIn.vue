@@ -111,7 +111,6 @@ export default {
   background-position: center;
   min-height: 100vh;
 }
-
 .sign-in-card {
   backdrop-filter: blur(6px);
   background-color: rgba(255, 255, 255, 0.7); /* Increased transparency */
