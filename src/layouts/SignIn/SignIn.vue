@@ -43,8 +43,12 @@
               rounded
             ></v-text-field>
              <v-row>
-              
               <v-col class="d-flex justify-end">
+              <router-link  :to="{name:'forgotPassword'}" class=" mt-3 mr-2 forgot-password-link" >
+
+                Forgot Password?
+             
+              </router-link>
                 <v-btn color="primary" @click="signIn"  :disabled="!isValid" rounded>
                   Sign In
                 </v-btn>
@@ -107,7 +111,6 @@ export default {
   background-position: center;
   min-height: 100vh;
 }
-
 .sign-in-card {
   backdrop-filter: blur(6px);
   background-color: rgba(255, 255, 255, 0.7); /* Increased transparency */
@@ -120,8 +123,17 @@ export default {
   font-size: 1.5rem;
   color: #333;
 }
-
 .v-card-title, .v-text-field label, .v-btn {
   font-family: 'Poppins', sans-serif;
+}
+.forgot-password-link {
+  color: #1976d2; /* Primary color */
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.forgot-password-link:hover {
+  color: #0d47a1; /* Darker shade on hover */
 }
 </style>
