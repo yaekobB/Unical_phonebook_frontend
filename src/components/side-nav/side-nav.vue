@@ -19,13 +19,14 @@
           <div class="d-flex align-center mt-4 mb-6 pa-2" >
             <!-- Avatar -->
               <v-avatar :size="sideNavStore.rail? 40: 60" class="text-h6 font-weight-bold mr-2" color="red-darken-4">
-                {{ userInitials }}
+                {{ userStore.userInitials }}
               </v-avatar>
 
             <!-- User Info -->
             <div v-if="!sideNavStore.rail">
-              <div class="text-h6 font-weight-bold">{{ user.firstName }}  {{ user.lastName }}</div>
-              <div class="text-body-2 text--secondary">{{ user.email }}</div>
+             
+              <div class="text-h6 font-weight-bold">{{ userStore.user.firstName }}  {{ userStore.user.lastName }}</div>
+              <div class="text-body-2 text--secondary">{{ userStore.user.email }}</div>
             </div>
           </div>
         <v-divider></v-divider>
@@ -61,25 +62,28 @@
 </template>
 <script>
 import {useSideNavStore} from './store'
+import {useUserStore} from '@/pages/user-account/store'
 export default {
    data() {   
    
     return { 
        sideNavStore: useSideNavStore(),
-      user: { },
+       userStore: useUserStore(),
+      // user: { },
       
      }
   },
   computed:{
-     userInitials() {
-      return `${this.user.firstName[0]}${this.user.lastName[0]}`.toUpperCase();
-    },
+    //  userInitials() {
+    //   return `${this.user.firstName[0]}${this.user.lastName[0]}`.toUpperCase();
+    // },
 
   },
   created(){
     // const sideNavStore = useSideNavStore()
     let localStoredUserRole = JSON.parse(localStorage.signInUser).userRole;
-    this.user = JSON.parse(localStorage.userInformation)
+    // this.userStore.getUser(localStoredUserRole.role)
+    // this.user = this.userStore.user
 
     const navs = this.sideNavStore.navItems.filter(nav => {
           return nav.role && nav.role.includes(localStoredUserRole);

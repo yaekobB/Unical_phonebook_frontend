@@ -61,12 +61,12 @@
               </v-card-title>
               <div class="py-2">
                 <div class="font-weight-light text-medium-emphasis">
-                 <router-link to="">
-                  {{contact.department}}</router-link> 
+                 <a :href="contact.departmentLink">
+                  {{contact.departmentName}}</a> 
                  <!-- (Macro) Settore Servizi didattica e studenti DESF - Dipartimento di Economia, Statistica e Finanza -->
                  
                   <br/>
-                {{contact.userType}}
+                {{contact.roleName}}
                   
                   
                  <!-- {{contact.userType}} -->

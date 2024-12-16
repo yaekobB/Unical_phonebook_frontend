@@ -48,7 +48,7 @@
             divided
             
           >
-            <v-btn >
+            <v-btn v-if="tableStore.componentName == 'user'">
               <v-tooltip location="bottom" >
                 <template v-slot:activator="{ props }">        
                    
@@ -134,6 +134,7 @@
                   v-model="tableStore.editedItem[field.key]"
                   :label="field.label"
                   :items="field.items"
+                  :item-title="field.name"
                   :prepend-inner-icon="field.prependIcon"
                   :rules="field.rules"
                   variant="outlined"
@@ -193,6 +194,7 @@
                   v-model="tableStore.editedItem[field.key]"
                   :label="field.label"
                   :items="field.items"
+                  :item-title="field.name"
                   :prepend-inner-icon="field.prependIcon"
                   :rules="field.rules"
                   variant="outlined"
@@ -213,8 +215,8 @@
     </v-dialog>
 
     <!-- Delete Confirmation Dialog -->
-    <v-dialog v-model="tableStore.dialogDeleteVisible" max-width="500px">
-      <v-card>
+    <v-dialog v-model="tableStore.dialogDeleteVisible" max-width="600px" min-height="400px">
+      <v-card >
         <v-card-title class="text-h5" color="warning">Are you sure you want to delete this {{tableStore.dialogTitle}}?</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -259,7 +261,7 @@ export default {
       this.tableStore.openEditDialog();
     },
     changeStatus(item){
-      this.tableStore.editedItem = {...item}
+      // this.tableStore.editedItem = {...item}
 
       this.tableStore.changeStatus(item);
 

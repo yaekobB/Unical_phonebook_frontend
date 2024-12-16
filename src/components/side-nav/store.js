@@ -9,8 +9,8 @@ export const useSideNavStore = defineStore('sideNavStore', {
    navItems:[
     {title:"Profile", value:"profile",prependIcon:"mdi-account-circle",url:"profile",role:['Admin','Student','Administrative','Faculty']},
     {title:"Users", value:"user",prependIcon:"mdi-account",url:"users", role:['Admin']},
-    {title:"Departments", value:"department",prependIcon:"mdi-domain",role:['Admin']},
-    {title:"Roles", value:"role",prependIcon:"mdi-badge-account-horizontal",role:['Admin']},
+    {title:"Departments", value:"department",prependIcon:"mdi-domain",url:"departments",role:['Admin']},
+    {title:"Roles", value:"role",prependIcon:"mdi-badge-account-horizontal",url:"roles",role:['Admin']},
     {title:"Chat", value:"chat",prependIcon:"mdi-chat",url:"chat",role:['Admin','Student','Administrative','Faculty']},
 
 ],

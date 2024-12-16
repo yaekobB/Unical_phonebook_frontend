@@ -14,6 +14,9 @@ import Test from '../components/snackbar/test'
 import Chat from '@/pages/chat/chat.vue'
 import UserAccount from '../pages/user-account/user-account.vue'
 import Dashboard from '../components/Dashboard/Dashboard.vue'
+import Department from '@/pages/department/department.vue'
+import Role from '@/pages/role/role.vue'
+
 import userRole from '@/services/userRole'
 import Profile from '@/pages/profile/profile.vue'
 import Phonebook from '@/pages/phonebook/phonebook.vue'
@@ -39,6 +42,31 @@ const  routes = [
     meta: { authorize: [userRole.admin] },
     children:[
       { path: '', name:"user1", component: UserAccount},
+      
+
+    ]
+
+  },
+  { 
+    path:'/roles', 
+    name:"roles",
+    component: Dashboard,
+    meta: { authorize: [userRole.admin] },
+    children:[
+      { path: '', name:"role", component: Role},
+      
+
+    ]
+
+  },
+  { 
+    path:'/departments', 
+    name:"departments",
+    component: Dashboard,
+    meta: { authorize: [userRole.admin] },
+    children:[
+      { path: '', name:"department", component: Department},
+      
 
     ]
 
