@@ -50,7 +50,7 @@ export default {
           email: this.details.email,
           phoneNumber: this.details.phoneNumber,
           userStatus:this.details.userStatus,
-          department: this.details.department,
+          departmentName: this.details.departmentName,
           userType: this.details.userType
         },
         officeInfo:{
