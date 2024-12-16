@@ -5,7 +5,7 @@
  */
 
 // Composables
-// import { createRouter, createWebHistory } from 'vue-router/auto'
+import { createRouter, createWebHistory } from 'vue-router/auto'
 // import { setupLayouts } from 'virtual:generated-layouts'
 import SignIn from '../layouts/SignIn/SignIn.vue'
 import SignUp from '@/layouts/SignUp/sign-up.vue'
