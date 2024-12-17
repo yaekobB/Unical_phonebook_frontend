@@ -112,7 +112,7 @@ export const useForgotPasswordStore = defineStore('ForgotPasswordStore', {
         }catch(error){
             console.log("CP:Error Message: ",error.message)
             this.snackbarStore.showSnackbar({
-                message: error.message,
+                message: "Wrong old Password",
                 color: 'error',
                 timeout: 3000
               })

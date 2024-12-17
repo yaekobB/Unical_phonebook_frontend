@@ -124,7 +124,7 @@ import TableView from '@/pages/phonebook/table-view.vue'
 import { useUserStore } from '@/pages/user-account/store';
 import {useDepartmentStore} from '@/pages/department/store'
 import {useRoleStore} from '@/pages/role/store'
-// import roles from '@/services/roles'
+import userRoleService from '@/services/userRole'
 // import departments from '@/services/departments'
 export default{
     name:'Phonebook',
@@ -173,7 +173,7 @@ export default{
 
     search(){
      this.controlPagination()
-     console.log(this.search)
+    //  console.log(this.search)
     }
   },
     methods:{
@@ -181,7 +181,7 @@ export default{
             this.viewStat = view
         },
        async controlPagination(){
-        console.log(this.selectedDepartments)
+        // console.log(this.selectedDepartments)
         let departmentId = null
         let roleId = null
 
@@ -192,8 +192,8 @@ export default{
         if(this.selectedRoles){
               roleId = this.userStore.findRoleId(this.selectedRoles)
         }
-        console.log(departmentId)
-        console.log(roleId)
+        // console.log(departmentId)
+        // console.log(roleId)
         // console.log("Control pagination called")
            // the fourth parameter is isPublic value which is true for public request
              await this.userStore.getUsers(this.pageLimit, this.currentPage, this.search,roleId, departmentId,true);
@@ -219,13 +219,20 @@ export default{
 
         this.departments = this.departmentStore.departments
         this.roles = this.roleStore.roles
-        console.log(this.departmentStore.departments)
+      
+        // console.log(this.departmentStore.departments)
             // await this.userStore.getUsers('','','');
             // this.totalPage = Math.ceil( this.userStore.users.length / this.pageLimit)
      
     // this.totalPage = this.userStore.users.length / this.pageLimit  // Initial data load
   },
-//     async created() {
+    async created() {
+         await this.roleStore.getRoles()
+        let mappedRoles = await this.roleStore.roles.map( role => role.roleName)
+         awaituserRoleService.setRoles(mappedRoles)
+         console.log(mappedRoles)
+         console.log(userRoleService.userRole)
+         console.log(userRoleService.roles)
 //     // const tableStore = useTableStore();
 //      const userStore = useUserStore();
 //     // const navSideStore = useSideNavStore();
@@ -245,7 +252,7 @@ export default{
 //     // tableStore.initializeItems([
 //     //   {id:"1", firstName:"Robel", middleName:"Gebrehiwot", lastName:"Brhane", userRole:"Admin",email:"robel@unical.it",phoneNumber:"+393511141072"}
 //     // ])
-//   },
+  },
 
     
 }

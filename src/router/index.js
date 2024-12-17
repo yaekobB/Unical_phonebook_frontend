@@ -36,7 +36,10 @@ const  routes = [
   { path:'/chat',
     name:'chats', 
     component: Dashboard,
-    meta: { authorize: [userRole.admin,userRole.student, userRole.faculty, userRole.administrative] },
+    // meta: { authorize: [userRole.userRole.admin,userRole.userRole.student, userRole.userRole.faculty, userRole.userRole.administrative] },
+    // meta: { authorize: userRole.roles },
+   meta: { authorize:  Object.values(userRole.userRole) },
+
     children:[
       {path:'', name:"chat", component:Chat}
     ]
@@ -45,7 +48,7 @@ const  routes = [
     path:'/users', 
     name:"users",
     component: Dashboard,
-    meta: { authorize: [userRole.admin] },
+    meta: { authorize: [userRole.userRole.admin] },
     children:[
       { path: '', name:"user1", component: UserAccount},
       
@@ -57,7 +60,7 @@ const  routes = [
     path:'/roles', 
     name:"roles",
     component: Dashboard,
-    meta: { authorize: [userRole.admin] },
+    meta: { authorize: [userRole.userRole.admin] },
     children:[
       { path: '', name:"role", component: Role},
       
@@ -69,7 +72,7 @@ const  routes = [
     path:'/departments', 
     name:"departments",
     component: Dashboard,
-    meta: { authorize: [userRole.admin] },
+    meta: { authorize: [userRole.userRole.admin] },
     children:[
       { path: '', name:"department", component: Department},
       
@@ -79,7 +82,9 @@ const  routes = [
   },
   {path:'/profile', name:"profiles",
   component: Dashboard,
-  meta: { authorize: [userRole.admin,userRole.student, userRole.faculty, userRole.administrative] },
+  // meta: { authorize: [userRole.userRole.admin,userRole.userRole.student, userRole.userRole.faculty, userRole.userRole.administrative] },
+  meta: { authorize:  Object.values(userRole.userRole) },
+  
   children:[
     { path: '', name:"profile1", component: Profile},
 

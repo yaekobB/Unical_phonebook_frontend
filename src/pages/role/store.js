@@ -91,7 +91,7 @@ export const useRoleStore = defineStore('roleStore', {
                   })
             }
             
-            console.log(response.data)
+            // console.log(response.data)
           } catch (error) {
             // console.log('Error fetching data:', error);
             // console.log(error.message)
@@ -107,12 +107,12 @@ export const useRoleStore = defineStore('roleStore', {
            
     
       try {
-        console.log("Getting a role")
-        console.log(roleId)
+        // console.log("Getting a role")
+        // console.log(roleId)
         
           const url = `/role/${roleId}`
           const response = await apiClient.get(url);
-          console.log(response.data)
+          // console.log(response.data)
           if(response.data.error){
               // snackbarStore.showSnackbar({
               //     message: this.data.error,
@@ -149,7 +149,7 @@ export const useRoleStore = defineStore('roleStore', {
     async setAddRole(role){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log(role)
+            // console.log(role)
             const response = await apiClient.post('/roles',{...role});
             this.data = response.data;
             // console.log(this.data)
@@ -186,7 +186,7 @@ export const useRoleStore = defineStore('roleStore', {
            
             const response = await apiClient.put(`/roles/${role.roleId}`,{...role});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -204,7 +204,7 @@ export const useRoleStore = defineStore('roleStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -224,7 +224,7 @@ export const useRoleStore = defineStore('roleStore', {
           
             const response = await apiClient.delete(`/roles/${role.roleId}`,{...role});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,

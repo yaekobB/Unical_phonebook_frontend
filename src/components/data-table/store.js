@@ -77,29 +77,32 @@ export const useTableStore = defineStore('tableStore', {
 
     },
     togglePasswordVisibility(key) {
-      this.userStore.togglePasswordVisibility(key)
+      console.log("at password toggle")
+      const userStore = useUserStore()
+      console.log(key)
+      userStore.togglePasswordVisibility(key)
      
       
     },
     async saveItem() {
       // const userStore = useUserStore();
       const store = this.storeMap[this.componentName];
-      console.log("@ SaveItem in table store==========")
-      // console.log(store)
-      // console.log(this.editedItem[`${this.componentName}Id`])
+      //console.log("@ SaveItem in table store==========")
+      // //console.log(store)
+      // //console.log(this.editedItem[`${this.componentName}Id`])
       if (this.editedItem[`${this.componentName}Id`]) {
-        console.log("@ table store editing")
+        //console.log("@ table store editing")
         
         // Edit existing item
         const index = this.items.findIndex(item => item[`${this.componentName}Id`] === this.editedItem[`${this.componentName}Id`]);
-        console.log(index)
+        //console.log(index)
         if (index !== -1) {
           this.items[index] = { ...this.editedItem };
          // Dynamically get the store
           const actionName = `setEdit${this.capitalize(this.componentName)}`; // Construct the action name dynamically
     
           if (store && typeof store[actionName] === "function") {
-            console.log("at Editing item========")
+            //console.log("at Editing item========")
             store[actionName]({ ...this.editedItem}); 
           
 
@@ -108,17 +111,17 @@ export const useTableStore = defineStore('tableStore', {
           // await store[`get${this.componentName}s`]
 
           // await   this.initializeItems(store[`${this.componentName}s`])
-          // console.log(store[`${this.componentName}s`])
-          // console.log(this.items)
+          // //console.log(store[`${this.componentName}s`])
+          // //console.log(this.items)
           this.closeEditDialog();
         }
       } else {
         // Add new item
-        console.log("@ table store")
+        //console.log("@ table store")
         const actionName = `setAdd${this.capitalize(this.componentName)}`; // Construct the action name dynamically
-        console.log(actionName)
+        //console.log(actionName)
         if (store && typeof store[actionName] === "function") {
-          console.log("call for adding ...")
+          //console.log("call for adding ...")
           store[actionName]({ ...this.editedItem}); // Pass the payload
           
 
@@ -127,25 +130,25 @@ export const useTableStore = defineStore('tableStore', {
         // this.items.push({ ...this.editedItem, id: Date.now() }); 
         // await store[`get${this.componentName}s`]
         // await this.initializeItems(store[`${this.componentName}s`])
-        // console.log(store[`${this.componentName}s`])
-        // console.log(store[`${this.componentName}s`])
-        // console.log(this.items)
+        // //console.log(store[`${this.componentName}s`])
+        // //console.log(store[`${this.componentName}s`])
+        // //console.log(this.items)
         this.closeDialog(); // Assign a new ID
       }
       
     },
     async deleteItem() {
       const store = this.storeMap[this.componentName];
-      console.log("deleting item-----------")
-      console.log(store)
+      //console.log("deleting item-----------")
+      //console.log(store)
       if (this.itemToDelete) {
         const index = this.items.indexOf(this.itemToDelete);
-        console.log(index)
+        //console.log(index)
         if (index !== -1) {
           const actionName = `setDelete${this.capitalize(this.componentName)}`; // Construct the action name dynamically
-          console.log(actionName)
+          //console.log(actionName)
           if (store && typeof store[actionName] === "function") {
-            console.log("call for deleting ...")
+            //console.log("call for deleting ...")
             store[actionName]({ ...this.itemToDelete}); 
             
 
@@ -158,17 +161,17 @@ export const useTableStore = defineStore('tableStore', {
       // await store[`get${this.componentName}s`]
      
       //  await this.initializeItems(store[`${this.componentName}s`])
-      // console.log(store[`${this.componentName}s`])
-      // console.log(this.items)
+      // ////console.log(store[`${this.componentName}s`])
+      // ////console.log(this.items)
       this.closeDeleteDialog();
     },
     changeStatus(item){
       const store = this.storeMap[this.componentName];
 
       const actionName = `changeStatus`; // Construct the action name dynamically
-      console.log(actionName)
+      ////console.log(actionName)
       if (store && typeof store[actionName] === "function") {
-        console.log("call for changing status ...")
+        ////console.log("call for changing status ...")
         store[actionName]({ ...item}); // Pass the payload
         // store[`get${this.componentName}s`]
         // this.initializeItems(store[`${this.componentName}s`])

@@ -280,7 +280,7 @@ export const useUserStore = defineStore('userStore', {
                 //     timeout: 3000
                 //   })
                 // this.users = response.data
-                console.log(response.data)
+                // console.log(response.data)
                   this.users = response.data.map((user,index) =>{
                     return {
                       ...user,
@@ -299,7 +299,7 @@ export const useUserStore = defineStore('userStore', {
                     }
                   })
 
-                  console.log(this.users)
+                  // console.log(this.users)
             }
             
             // console.log(response.data)
@@ -318,12 +318,12 @@ export const useUserStore = defineStore('userStore', {
            
     
       try {
-        console.log("Getting a user")
-        console.log(userId)
+        // console.log("Getting a user")
+        // console.log(userId)
         
           const url = `/user/${userId}`
           const response = await apiClient.get(url);
-          console.log(response.data)
+          // console.log(response.data)
           if(response.data.error){
               // snackbarStore.showSnackbar({
               //     message: this.data.error,
@@ -338,7 +338,7 @@ export const useUserStore = defineStore('userStore', {
               //     timeout: 3000
               //   })
               // this.users = response.data
-              console.log(response.data)
+              // console.log(response.data)
               this.user = response.data
                
               this.user.fullName= this.user.firstName +' '+ this.user.middleName +' '+ this.user.lastName
@@ -366,8 +366,8 @@ export const useUserStore = defineStore('userStore', {
     async setAddUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Adding user+++++++++")
-            console.log(user)
+            // console.log("Adding user+++++++++")
+            // console.log(user)
             user.departmentId =  this.findDepartmentId(user.departmentName)
             user.roleId = this.findRoleId(user.roleName)
             user.userType = user.roleId
@@ -392,7 +392,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
             await  this.snackbarStore.showSnackbar({
@@ -406,18 +406,18 @@ export const useUserStore = defineStore('userStore', {
     async setEditUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-          console.log("@Editing a user ++++++")
-          console.log(user)
+          // console.log("@Editing a user ++++++")
+          // console.log(user)
           user.departmentId =  this.findDepartmentId(user.departmentName)
           user.roleId = this.findRoleId(user.roleName)
           user.userType = user.roleName
 
-          console.log(user.departmentId)
-          console.log(user.roleId)
+          // console.log(user.departmentId)
+          // console.log(user.roleId)
            
             const response = await apiClient.put(`/user/${user.userId}`,{...user});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -436,7 +436,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -450,14 +450,14 @@ export const useUserStore = defineStore('userStore', {
     async changeStatus(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("change user status")
-            console.log(user)
+            // console.log("change user status")
+            // console.log(user)
             const  status = {
               userStatus: user.userStatus == "Active"? "NotVerified":"Active"
             }
             const response = await apiClient.put(`/user/changestatus/${user.userId}`,status);
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -475,7 +475,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -493,9 +493,9 @@ export const useUserStore = defineStore('userStore', {
             const  isPrivacy = {
               isPrivacyDisabled: !user.isPrivacyDisabled
             }
-            console.log("at changing privacy")
-            console.log(user.userId)
-            console.log(isPrivacy)
+            // console.log("at changing privacy")
+            // console.log(user.userId)
+            // console.log(isPrivacy)
            
             const response = await apiClient.put(`/user/changeprivacy/${user.userId}`,isPrivacy);
             this.data = response.data;
@@ -507,7 +507,7 @@ export const useUserStore = defineStore('userStore', {
                     timeout: 3000
                   })
             }else{
-              console.log("successfully enabled or disabled")
+              // console.log("successfully enabled or disabled")
             //  await this.getUsers()
              this.snackbarStore.showSnackbar({
                 message: "Successfully Updated",
@@ -516,7 +516,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -530,12 +530,12 @@ export const useUserStore = defineStore('userStore', {
     async setDeleteUser(user){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Deleting user")
-            console.log(user)
+            // console.log("Deleting user")
+            // console.log(user)
           
             const response = await apiClient.delete(`/user/${user.userId}`,{...user});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -553,7 +553,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -567,11 +567,11 @@ export const useUserStore = defineStore('userStore', {
     async verifyEmail(email){
       // const snackbarStore = useSnackbarStore();
         try {
-           console.log(email)
+          //  console.log(email)
           
             const response = await apiClient.put('/user/verify',{...email});
             this.data = response.data;
-            console.log(this.data)
+            // console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.message,
@@ -587,7 +587,7 @@ export const useUserStore = defineStore('userStore', {
               })
             router.push('/sign-in')
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
            await  this.snackbarStore.showSnackbar({
@@ -601,12 +601,12 @@ export const useUserStore = defineStore('userStore', {
     async resendCode(email){
       // const snackbarStore = useSnackbarStore();
         try {
-           console.log("at resendcode store ===============")
-           console.log(email)
+          //  console.log("at resendcode store ===============")
+          //  console.log(email)
           
             const response = await apiClient.put('/user/resend-code',{...email});
             this.data = response.data;
-            console.log(this.data.message)
+            // console.log(this.data.message)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.message,
@@ -622,7 +622,7 @@ export const useUserStore = defineStore('userStore', {
               })
 
             }
-            console.log(this.data)
+            // console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
            await  this.snackbarStore.showSnackbar({
@@ -635,6 +635,7 @@ export const useUserStore = defineStore('userStore', {
     },
 
     togglePasswordVisibility(key) {
+      console.log(key)
      
       this.formFields.forEach(field => {
         if (field.key === key) {
@@ -660,7 +661,7 @@ export const useUserStore = defineStore('userStore', {
     },
     findDepartmentId(department){
       const deptId =this.departmentStore.departments.filter(dept =>dept.departmentName == department)           
-      console.log(deptId)
+      // console.log(deptId)
       return deptId[0].departmentId
     },
     findRoleId(role){

@@ -28,6 +28,19 @@ export const useSideNavStore = defineStore('sideNavStore', {
         console.log("Set Navigations called")
         console.log(navs)
         this.navigations = navs
+    },
+    setNavItemsRole(role){
+      
+     this.navItems.forEach(nav => {
+      if(nav.value == "chat"|| nav.value =="profile"){
+        nav.role = role
+      }
+      else{
+        const adminRole = role.filter(r => r == 'Admin')
+        nav.role = adminRole
+      }
+      // console.log(this.navItems)
+     })
     }
     
   },

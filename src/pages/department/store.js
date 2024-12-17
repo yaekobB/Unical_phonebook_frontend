@@ -72,7 +72,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
           
             const url = `/departments`
             const response = await apiClient.get(url);
-            // console.log(response.data)
+            // //////console.log(response.data)
             if(response.data.error){
                 // snackbarStore.showSnackbar({
                 //     message: this.data.error,
@@ -94,13 +94,13 @@ export const useDepartmentStore = defineStore('departmentStore', {
                     }
                   })
 
-                  console.log(this.departments)
+                  ////console.log(this.departments)
             }
             
-            // console.log(response.data)
+            // ////console.log(response.data)
           } catch (error) {
-            // console.log('Error fetching data:', error);
-            // console.log(error.message)
+            // ////console.log('Error fetching data:', error);
+            // ////console.log(error.message)
             // snackbarStore.showSnackbar({
             //     message: error.message,
             //     color: 'error',
@@ -113,12 +113,12 @@ export const useDepartmentStore = defineStore('departmentStore', {
            
     
       try {
-        console.log("Getting a department")
-        console.log(departmentId)
+        ////console.log("Getting a department")
+        ////console.log(departmentId)
         
           const url = `/department/${departmentId}`
           const response = await apiClient.get(url);
-          console.log(response.data)
+          ////console.log(response.data)
           if(response.data.error){
               // snackbarStore.showSnackbar({
               //     message: this.data.error,
@@ -140,10 +140,10 @@ export const useDepartmentStore = defineStore('departmentStore', {
                 
           }
           
-          // console.log(response.data)
+          // ////console.log(response.data)
         } catch (error) {
-          // console.log('Error fetching data:', error);
-          // console.log(error.message)
+          // ////console.log('Error fetching data:', error);
+          // ////console.log(error.message)
           // snackbarStore.showSnackbar({
           //     message: error.message,
           //     color: 'error',
@@ -155,10 +155,10 @@ export const useDepartmentStore = defineStore('departmentStore', {
     async setAddDepartment(department){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Adding Department")
+            ////console.log("Adding Department")
             const response = await apiClient.post('/departments',{...department});
             this.data = response.data;
-            // console.log(this.data)
+            // ////console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.message,
@@ -176,7 +176,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
               })
 
             }
-            console.log(this.data)
+            ////console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
             await  this.snackbarStore.showSnackbar({
@@ -188,14 +188,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
         
     },
     async setEditDepartment(department){
-      console.log("Editting Department")
-       console.log(department)
+      ////console.log("Editting Department")
+       ////console.log(department)
       // const snackbarStore = useSnackbarStore();
         try {
            
             const response = await apiClient.put(`/departments/${department.departmentId}`,{...department});
             this.data = response.data;
-            console.log(this.data)
+            ////console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -213,7 +213,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
               })
 
             }
-            console.log(this.data)
+            ////console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({
@@ -229,12 +229,12 @@ export const useDepartmentStore = defineStore('departmentStore', {
     async setDeleteDepartment(department){
       // const snackbarStore = useSnackbarStore();
         try {
-            console.log("Deleting department")
-            console.log(department)
+            ////console.log("Deleting department")
+            ////console.log(department)
           
             const response = await apiClient.delete(`/departments/${department.departmentId}`,{...department});
             this.data = response.data;
-            console.log(this.data)
+            ////console.log(this.data)
             if(this.data.error){
              this.snackbarStore.showSnackbar({
                     message: this.data.error,
@@ -252,7 +252,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
               })
 
             }
-            console.log(this.data)
+            //////console.log(this.data)
           } catch (error) {
             console.error('Error fetching data:', error);
              await  this.snackbarStore.showSnackbar({

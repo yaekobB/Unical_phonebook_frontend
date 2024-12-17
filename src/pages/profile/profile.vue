@@ -329,13 +329,13 @@ export default {
              useChangePassword.isPasswordChanged = false;
           }
     },    
-        toggleOldPasswordVisibility(){
+    toggleOldPasswordVisibility(){
           this.showOldPassword =!this.showOldPassword;
         },
-        toggleNewPasswordVisibility(){
+    toggleNewPasswordVisibility(){
           this.showNewPassword =!this.showNewPassword;
         },
-        toggleConfirmPasswordVisibility(){
+    toggleConfirmPasswordVisibility(){
           this.showConfirmPassword =!this.showConfirmPassword;
         },
     toggleDialog(){

@@ -63,12 +63,15 @@
 <script>
 import {useSideNavStore} from './store'
 import {useUserStore} from '@/pages/user-account/store'
+import { useRoleStore } from '@/pages/role/store'
+import userRoleService from '@/services/userRole'
 export default {
    data() {   
    
     return { 
        sideNavStore: useSideNavStore(),
        userStore: useUserStore(),
+       roleStore:useRoleStore(),
       // user: { },
       
      }
@@ -79,12 +82,16 @@ export default {
     // },
 
   },
-  created(){
+  async created(){
     // const sideNavStore = useSideNavStore()
     let localStoredUserRole = JSON.parse(localStorage.signInUser).userRole;
     // this.userStore.getUser(localStoredUserRole.role)
     // this.user = this.userStore.user
-
+    await this.roleStore.getRoles()
+    let mappedRoles = this.roleStore.roles.map( role => role.roleName)
+    this.sideNavStore.setNavItemsRole(mappedRoles)
+    userRoleService.setRoles(mappedRoles)
+    // console.log(mappedRoles)
     const navs = this.sideNavStore.navItems.filter(nav => {
           return nav.role && nav.role.includes(localStoredUserRole);
       });

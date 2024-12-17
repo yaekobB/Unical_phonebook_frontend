@@ -44,13 +44,14 @@ export const useSignInStore = defineStore('signInStore', {
             
                     
               let localStoredUserRole = JSON.parse(localStorage.signInUser).userRole
-              if(localStoredUserRole == userRole.admin){
+              if(localStoredUserRole == userRole.userRole.admin){
                 // console.log("true")
                 // this.userStore.getUser(localStorageVariable.userId)
 
                 this.userStore.getUsers()
                 router.push('users')
               }else{
+                console.log("at not admin block")
                 // this.userStore.getUser(localStorageVariable.userId)
                 router.push('profile')
               }

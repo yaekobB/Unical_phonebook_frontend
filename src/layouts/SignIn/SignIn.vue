@@ -43,8 +43,9 @@
               rounded
             ></v-text-field>
              <v-row>
-              <v-col class="d-flex justify-end">
-              <router-link  :to="{name:'forgotPassword'}" class=" mt-3 mr-2 forgot-password-link" >
+            
+              <v-col class="d-flex justify-end ">
+              <router-link  :to="{name:'forgotPassword'}" class=" mt-3 mr-4 forgot-password-link" >
 
                 Forgot Password?
              
@@ -52,6 +53,15 @@
                 <v-btn color="primary" @click="signIn"  :disabled="!isValid" rounded>
                   Sign In
                 </v-btn>
+              </v-col>
+                
+            </v-row>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <span block rounded color="primary" variant="text">
+                  <strong>Don't have an account?</strong>
+                 <strong> <a href="/sign-up" class="ml-2">Sign UP</a></strong>
+                  </span>
               </v-col>
             </v-row>
           </v-form>
